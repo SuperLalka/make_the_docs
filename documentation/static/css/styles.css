@@ -1,5 +1,7 @@
 .sidebar-nav_upper {
   background: #ff9302;
+  margin: 0;
+  padding: 15px;
 }
 #sidebar-nav_upper__search-form {
   border-radius: 50px;

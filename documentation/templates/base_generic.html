@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-  {% block title %}<title>Local Library</title>{% endblock %}
+  {% block title %}<title>Make the Docs</title>{% endblock %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -25,9 +25,9 @@
   <div class="container p-md-0 m-md-0">
     <div class="row">
       <nav class="sidebar-nav col-sm-3 d-none d-sm-none d-md-block">
-        <div class="sidebar-nav_upper justify-content-center m-0 p-4">
+        <div class="sidebar-nav_upper justify-content-center">
           <div class="row m-2">
-            <button type="button" class="btn" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <button type="button" class="btn" data-toggle="button" aria-pressed="false">
               {% load static %}
               <img class="img_logo w-100" src="{% static 'logo.svg' %}" alt="logo">
             </button>
@@ -38,12 +38,14 @@
         </div>
         <div class="sidebar-nav_list">
           {% block sidebar %}
-          <p class="sidebar-nav_list__tags pt-3 text-uppercase">First steps</p>
+          <p class="sidebar-nav_list__tags pt-3 text-uppercase">Articles</p>
+          {% if list_articles %}
           <ul class="list-group">
-            <li><a class="list-group-item list-group-item-action text-decoration-none" href="#">Home</a></li>
-            <li><a class="list-group-item list-group-item-action text-decoration-none" href="#">All books</a></li>
-            <li><a class="list-group-item list-group-item-action text-decoration-none" href="#">All authors</a></li>
+            {% for article in list_articles %}
+            <li><a class="list-group-item list-group-item-action text-decoration-none" href="{{ article.id }}">{{ article.title }}</a></li>
+            {% endfor %}
           </ul>
+          {% endif %}
           {% endblock %}
         </div>
       </nav>
@@ -52,17 +54,22 @@
           <div class="col-9">
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb bg-white m-0">
-                <li class="breadcrumb-item"><a class="text-decoration-none" href="#">Docs</a></li>
+                <li class="breadcrumb-item"><a class="text-decoration-none" href="#">Start Page</a></li>
                 <li class="breadcrumb-item active" aria-current="page">INDEX</li>
               </ol>
             </nav>
           </div>
           <div class="col-3 align-self-center">
-            <p class="text-right m-0"><a class="text-decoration-none" href="https://github.com/">Edit on GitHub</a></p>
+            <p class="text-right m-0"><a class="text-decoration-none" href="https://github.com/SuperLalka/make_the_docs">
+              <img class="w-25" src="https://github.githubassets.com/images/spinners/octocat-spinner-128.gif">
+              Edit on GitHub
+            </a></p>
           </div>
         </div>
         <hr>
+        <!--content_start-->
         {% block content %}{% endblock %}
+        <!--content_end-->
         <hr>
         <footer class="content-footer">
           <h6 class="footer-text">

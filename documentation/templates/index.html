@@ -1,19 +1,11 @@
 {% extends "base_generic.html" %}
 
-{% block title %}<title>Make the Docs</title>{% endblock %}
+{% block title %}
+<title>
+  {{ article.title }}
+</title>
+{% endblock %}
 
 {% block content %}
-<h1>Make the Docs: Documentation Simplified</h1>
-<p>Make the Docs simplifies software documentation by building, versioning, and hosting of your docs, automatically. Think of it as Continuous Documentation.</p>
-<dl>
-  <dt>Never out of sync</dt>
-  <dd>Whenever you push code to your favorite version control system, whether that is Git, Mercurial, Bazaar, or Subversion, Read the Docs will automatically build your docs so your code and documentation are always up-to-date. Read more about Incoming Webhooks and Automation.</dd>
-  <dt>Multiple versions</dt>
-  <dd>Read the Docs can host and build multiple versions of your docs so having a 1.0 version of your docs and a 2.0 version of your docs is as easy as having a separate branch or tag in your version control system. Read more about Versioned Documentation.</dd>
-  <dt>Open Source and User Focused</dt>
-  <dd>Our code is free and open source. Our company is bootstrapped and 100% user focused. Read the Docs Community hosts documentation for over 100,000 large and small open source projects, in almost every human and computer language. Read the Docs for Business supports hundreds of organizations with product and internal documentation.</dd>
-</dl>
-<p>You can find out more about our all the Read the Docs features in these pages.</p>
-
-
+{{ article.body }}
 {% endblock %}
