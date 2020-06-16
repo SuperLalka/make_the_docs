@@ -1,0 +1,27 @@
+.sidebar-nav_upper {
+  background: #ff9302;
+}
+#sidebar-nav_upper__search-form {
+  border-radius: 50px;
+}
+.sidebar-nav_list {
+  background: #ffb701;
+  color: white;
+}
+.sidebar-nav_list__tags {
+  cursor: default;
+  font-size: larger;
+  font-weight: bolder;
+  text-align: center;
+}
+.sidebar-nav_list a {
+  border: 0px;
+  background: transparent;
+  color: white;
+  height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.sidebar-nav_list a:hover {
+  background: linear-gradient(45deg, #ffd317, #ffb701);
+}

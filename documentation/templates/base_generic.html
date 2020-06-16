@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% block title %}<title>Local Library</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+          integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+          integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+          integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+          crossorigin="anonymous"></script>
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+  <div class="container p-md-0 m-md-0">
+    <div class="row">
+      <nav class="sidebar-nav col-sm-3 d-none d-sm-none d-md-block">
+        <div class="sidebar-nav_upper justify-content-center m-0 p-4">
+          <div class="row m-2">
+            <button type="button" class="btn" data-toggle="button" aria-pressed="false" autocomplete="off">
+              {% load static %}
+              <img class="img_logo w-100" src="{% static 'logo.svg' %}" alt="logo">
+            </button>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="sidebar-nav_upper__search-form" placeholder="Search Docs">
+          </div>
+        </div>
+        <div class="sidebar-nav_list">
+          {% block sidebar %}
+          <p class="sidebar-nav_list__tags pt-3 text-uppercase">First steps</p>
+          <ul class="list-group">
+            <li><a class="list-group-item list-group-item-action text-decoration-none" href="#">Home</a></li>
+            <li><a class="list-group-item list-group-item-action text-decoration-none" href="#">All books</a></li>
+            <li><a class="list-group-item list-group-item-action text-decoration-none" href="#">All authors</a></li>
+          </ul>
+          {% endblock %}
+        </div>
+      </nav>
+      <div class="content col-sm-8">
+        <div class="row">
+          <div class="col-9">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb bg-white m-0">
+                <li class="breadcrumb-item"><a class="text-decoration-none" href="#">Docs</a></li>
+                <li class="breadcrumb-item active" aria-current="page">INDEX</li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-3 align-self-center">
+            <p class="text-right m-0"><a class="text-decoration-none" href="https://github.com/">Edit on GitHub</a></p>
+          </div>
+        </div>
+        <hr>
+        {% block content %}{% endblock %}
+        <hr>
+        <footer class="content-footer">
+          <h6 class="footer-text">
+            © Copyright 2020, Make the Docs, LalkaInc & contributors Revision.
+          </h6>
+          <h6 class="footer-text">
+            Built with Sphinx using a theme provided by Make the Docs.
+          </h6>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
