@@ -24,3 +24,14 @@ def article(request, pk):
         )
     except Article.DoesNotExist:
         return index(request)
+
+"""#Вариант с get_object_or_404
+def article(request, pk):
+    list_articles = Article.objects.all()
+    article = get_object_or_404(Article, pk=pk)
+    return render(
+        request,
+        'index.html',
+        context={'list_articles':list_articles,'article':article}
+    )
+    """
