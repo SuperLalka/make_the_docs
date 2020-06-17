@@ -38,13 +38,19 @@
         </div>
         <div class="sidebar-nav_list">
           {% block sidebar %}
+          {% if list_section %}
           <ul class="list-group">
-            <li class="sidebar-nav_list__tags list-group-item text-uppercase">Articles</li>
+            {% for section in list_section %}
+            <li class="sidebar-nav_list__tags list-group-item text-uppercase">{{ section }}</li>
             {% if list_articles %}
             <ul class="list-group">
               {% for article in list_articles %}
+              {% if article.section == section %}
               <li><a class="list-group-item list-group-item-action text-decoration-none"
                      href="{% url 'documentation:article' article.id %}">{{ article.title }}</a></li>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
               {% endfor %}
             </ul>
             {% endif %}
