@@ -1,5 +1,11 @@
+a {
+  color: #ff9302;
+}
+a:hover {
+  color: #ffb701;
+}
 .sidebar-nav_upper {
-  background: #ff9302;
+  background: #5586a6;
   margin: 0;
   padding: 15px;
 }
@@ -7,14 +13,16 @@
   border-radius: 50px;
 }
 .sidebar-nav_list {
-  background: #ffb701;
+  background: #3d5a68;
   color: white;
 }
 .sidebar-nav_list__tags {
+  background: transparent;
+  border: 0px;
+  color: #ff9302;
   cursor: default;
   font-size: larger;
   font-weight: bolder;
-  text-align: center;
 }
 .sidebar-nav_list a {
   border: 0px;
@@ -25,5 +33,8 @@
   padding-bottom: 0;
 }
 .sidebar-nav_list a:hover {
-  background: linear-gradient(45deg, #ffd317, #ffb701);
+  background: linear-gradient(90deg, #ffb701, #ffb701, #3d5a68, #3d5a68);
+}
+.git_logo {
+  width: 20px;
 }

@@ -22,9 +22,9 @@
 </head>
 
 <body>
-  <div class="container p-md-0 m-md-0">
+  <div class="container-fluid m-md-0 p-md-0">
     <div class="row">
-      <nav class="sidebar-nav col-sm-3 d-none d-sm-none d-md-block">
+      <nav class="sidebar-nav col-md-3 d-none d-sm-none d-md-block">
         <div class="sidebar-nav_upper justify-content-center">
           <div class="row m-2">
             <button type="button" class="btn" data-toggle="button" aria-pressed="false">
@@ -38,30 +38,35 @@
         </div>
         <div class="sidebar-nav_list">
           {% block sidebar %}
-          <p class="sidebar-nav_list__tags pt-3 text-uppercase">Articles</p>
-          {% if list_articles %}
           <ul class="list-group">
-            {% for article in list_articles %}
-            <li><a class="list-group-item list-group-item-action text-decoration-none" href="{{ article.id }}">{{ article.title }}</a></li>
-            {% endfor %}
+            <li class="sidebar-nav_list__tags list-group-item text-uppercase">Articles</li>
+            {% if list_articles %}
+            <ul class="list-group">
+              {% for article in list_articles %}
+              <li><a class="list-group-item list-group-item-action text-decoration-none"
+                     href="{% url 'documentation:article' article.id %}">{{ article.title }}</a></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            {% endblock %}
           </ul>
-          {% endif %}
-          {% endblock %}
         </div>
       </nav>
-      <div class="content col-sm-8">
+      <div class="content col-md-8 ml-2">
         <div class="row">
           <div class="col-9">
             <nav aria-label="breadcrumb">
-              <ol class="breadcrumb bg-white m-0">
-                <li class="breadcrumb-item"><a class="text-decoration-none" href="#">Start Page</a></li>
-                <li class="breadcrumb-item active" aria-current="page">INDEX</li>
+              <ol class="breadcrumb bg-white m-0 pl-0">
+                <li class="breadcrumb-item"><a class="text-decoration-none" href="{% url 'documentation:index' %}">Start
+                  Page</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% block breadcrumb %}{% endblock %}</li>
               </ol>
             </nav>
           </div>
           <div class="col-3 align-self-center">
-            <p class="text-right m-0"><a class="text-decoration-none" href="https://github.com/SuperLalka/make_the_docs">
-              <img class="w-25" src="https://github.githubassets.com/images/spinners/octocat-spinner-128.gif">
+            <p class="text-right m-0"><a class="text-decoration-none"
+                                         href="https://github.com/SuperLalka/make_the_docs">
+              <img class="git_logo" src="https://github.githubassets.com/images/spinners/octocat-spinner-128.gif">
               Edit on GitHub
             </a></p>
           </div>

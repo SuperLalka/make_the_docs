@@ -6,6 +6,10 @@
 </title>
 {% endblock %}
 
+{% block breadcrumb %}
+{{ article.title }}
+{% endblock %}
+
 {% block content %}
 {{ article.body }}
 {% endblock %}

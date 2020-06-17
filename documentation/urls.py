@@ -6,7 +6,7 @@ from . import views
 
 app_name = 'documentation'
 urlpatterns = [
-    url(r'^article/(?P<pk>\d+)$', views.index, name='index'),
-    url(r'^$', RedirectView.as_view(url='article/1', permanent=True)),
+    url(r'^$', views.index, name='index'),
+    url(r'^article/(?P<pk>\d+)$', views.article, name='article'),
     
 ]
