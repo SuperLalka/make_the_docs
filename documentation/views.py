@@ -4,7 +4,7 @@ from .models import Article, Section
 
 
 def index(request):
-    list_articles = Article.objects.all()
+    list_articles = Article.objects.order_by("-priority")
     article = Article.objects.order_by("id").first()
     list_section = Section.objects.all()
     return render(
@@ -14,26 +14,14 @@ def index(request):
     )
 
 
-def article(request, pk):
-    list_articles = Article.objects.all()
-    try:
-        article = Article.objects.get(pk=pk)
-        list_section = Section.objects.all()
-        return render(
-            request,
-            'index.html',
-            context={'list_articles':list_articles,'article':article,'list_section':list_section}
-        )
-    except Article.DoesNotExist:
-        return index(request)
+class ArticleView(generic.DetailView):
+    model = Article
+    template_name = 'index.html'
+    slug_field = 'address'
+    slug_url_kwarg = 'address'
 
-"""#Вариант с get_object_or_404
-def article(request, pk):
-    list_articles = Article.objects.all()
-    article = get_object_or_404(Article, pk=pk)
-    return render(
-        request,
-        'index.html',
-        context={'list_articles':list_articles,'article':article}
-    )
-    """
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list_articles'] = Article.objects.order_by("-priority")
+        context['list_section'] = Section.objects.all()
+        return super().get_context_data(**context)
