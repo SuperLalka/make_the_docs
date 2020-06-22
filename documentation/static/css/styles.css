@@ -35,6 +35,10 @@ a:hover {
 .sidebar-nav_list a:hover {
   background: linear-gradient(90deg, #ffb701, #ffb701, #3d5a68, #3d5a68);
 }
+.sub-navigation {
+  background: #212b2d!important;
+  color: #ffb701!important;
+}
 .git_logo {
   width: 20px;
 }

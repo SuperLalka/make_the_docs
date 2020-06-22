@@ -2,6 +2,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 from .models import Article, Section
+from .utils import get_anchor_list
 
 
 def index(request):
@@ -31,6 +32,7 @@ class ArticleView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['list_articles'] = Article.objects.order_by("-priority")
         context['list_section'] = Section.objects.all()
+        context['anchor_list'] = get_anchor_list(self.object.body)
         return super().get_context_data(**context)
 
 

@@ -47,6 +47,14 @@
               {% if article.section == section %}
               <li><a class="list-group-item list-group-item-action text-decoration-none"
                      href="{% url 'documentation:article' article.address %}">{{ article.title }}</a></li>
+              {% if article.address in request.get_full_path %}
+              {% if anchor_list %}
+              {% for key, value in anchor_list.items %}
+              <li><a class="sub-navigation list-group-item list-group-item-action pl-5"
+                     href="#{{ value }}">{{ key }}</a></li>
+              {% endfor %}
+              {% endif %}
+              {% endif %}
               {% endif %}
               {% endfor %}
             </ul>
