@@ -27,3 +27,8 @@ def get_anchor_list(string):
     a1 = re.findall(r'headline">(.*?)<\/span><\/h2>', string)
     a2 = [transliterate(i) for i in a1]
     return dict(zip(a1, a2))
+
+def add_anchor(string):
+    for i in re.findall(r'headline">(.*?)<\/span><\/h2>', string):
+        string = string.replace(str(i), str(i) + "<a id='%s'></a></span></h2>" % transliterate(i))
+    return string
