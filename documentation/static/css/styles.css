@@ -4,11 +4,6 @@ a {
 a:hover {
   color: #ffb701;
 }
-.sidebar-nav {
-  height: min-content;
-  position: sticky;
-  top: 0;
-}
 .sidebar-nav_upper {
   background: #5586a6;
   margin: 0;
@@ -46,7 +41,4 @@ a:hover {
 }
 .git_logo {
   width: 20px;
-}
-.content-body {
-  min-height: 80vh;
 }
