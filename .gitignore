@@ -1,8 +1,8 @@
 .git
 .idea
-tinymce
 /**.__pycache__
 /documentation/**/__pycache__
 /make_the_docs/**/__pycache__
+/tinymce/**/__pycache__
 *.sqlite3
 out
