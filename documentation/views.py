@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.views import generic
@@ -43,5 +45,9 @@ def article_404(request):
     return render(
         request,
         'article_404.html',
-        context={'list_articles':list_articles,'list_section':list_section}
+        context={
+            'list_articles':list_articles,
+            'list_section':list_section,
+            'right_now': datetime.now()
+        }
     )
