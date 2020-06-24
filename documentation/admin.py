@@ -4,8 +4,9 @@ from .models import Article, Section
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'section')
-    list_filter = ('title', 'section')
+    list_display = ('title', 'section', 'priority')
+    list_filter = ('section', 'priority')
+    exclude = ['address']
 
 
 class ArticleInline(admin.TabularInline):
@@ -15,4 +16,6 @@ class ArticleInline(admin.TabularInline):
 
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
+    list_display = ('section', 'priority')
+    list_filter = ('section', 'priority')
     inlines = [ArticleInline]

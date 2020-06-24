@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>
+  Страница не найдена
+</title>
+{% endblock %}
+
+{% block breadcrumb %}
+<p>Страница не найдена</p>
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+  <h1><i>Запрашиваемая статья не найдена</i></h1>
+  <h4><i>Возможно она была удалена</i></h4>
+  {% load static %}
+  <img class="rounded w-50" src="{% static 'article_404.png' %}">
+</div>
+{% endblock %}
