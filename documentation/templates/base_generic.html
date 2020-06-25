@@ -17,6 +17,7 @@
           integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
           crossorigin="anonymous"></script>
 
+  {% load crispy_forms_tags %}
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
@@ -33,7 +34,8 @@
             </button>
           </div>
           <div class="form-group">
-            <input type="text" class="form-control" id="sidebar-nav_upper__search-form" placeholder="Search Docs">
+            <input type="text" class="form-control" id="sidebar-nav_upper__search-form"
+                   placeholder="Search Docs">
           </div>
         </div>
         <div class="sidebar-nav_list">
@@ -46,12 +48,14 @@
               {% for article in list_articles %}
               {% if article.section == section %}
               <li><a class="list-group-item list-group-item-action text-decoration-none"
-                     href="{% url 'documentation:article' article.address %}">{{ article.title }}</a></li>
+                     href="{% url 'documentation:article' article.address %}">{{ article.title }}</a>
+              </li>
               {% if article.address in request.get_full_path %}
               {% if anchor_list %}
               {% for key, value in anchor_list.items %}
-              <li><a class="sub-navigation list-group-item list-group-item-action pl-5"
-                     href="#{{ value }}">{{ key }}</a></li>
+              <li>
+                <a class="sub-navigation list-group-item list-group-item-action pl-5"
+                   href="#{{ value }}">{{ key }}</a></li>
               {% endfor %}
               {% endif %}
               {% endif %}
@@ -69,16 +73,21 @@
           <div class="col-9">
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb bg-white m-0 pl-0">
-                <li class="breadcrumb-item"><a class="text-decoration-none" href="{% url 'documentation:index' %}">Start
+                <li class="breadcrumb-item"><a class="text-decoration-none"
+                                               href="{% url 'documentation:index' %}">Start
                   Page</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{% block breadcrumb %}{% endblock %}</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  {% block breadcrumb %}{% endblock %}
+                </li>
               </ol>
             </nav>
           </div>
           <div class="col-3 align-self-center">
             <p class="text-right m-0"><a class="text-decoration-none"
                                          href="https://github.com/SuperLalka/make_the_docs">
-              <img class="git_logo" src="https://github.githubassets.com/images/spinners/octocat-spinner-128.gif">
+              <img class="git_logo"
+                   src="https://github.githubassets.com/images/spinners/octocat-spinner-128.gif"
+                   alt="git_logo">
               Edit on GitHub
             </a></p>
           </div>
@@ -86,7 +95,7 @@
         <hr>
         <!--content_start-->
         <div class="content-body">
-        {% block content %}{% endblock %}
+          {% block content %}{% endblock %}
         </div>
         <!--content_end-->
         <footer class="content-footer">
@@ -97,10 +106,36 @@
           <h6 class="footer-text">
             Built with Sphinx using a theme provided by Make the Docs.
           </h6>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ErrorModal">
+            Сообщить об ошибке
+          </button>
+          <!-- Modal -->
+          <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="ErrorModalLabel"
+               aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ErrorModalLabel">Сообщить об ошибке</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="error_send_email" method="post">
+                    {% csrf_token %}
+                    {{ err_form|crispy }}
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal end-->
         </footer>
       </div>
     </div>
   </div>
-
 </body>
 </html>
