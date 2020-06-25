@@ -4,7 +4,7 @@ from django.views import generic
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 
-from .forms import ErrorForm
+from .forms import ErrorForm, SearchForm
 from .models import Article, Section
 from .utils import add_anchor, get_anchor_list
 
@@ -13,14 +13,15 @@ def index(request):
     list_articles = Article.objects.order_by("-priority")
     article = Article.objects.order_by("id").first()
     list_section = Section.objects.all()
-    err_form = ErrorForm()
+    err_form, search_form = ErrorForm(), SearchForm()
     return render(
         request,
         'index.html',
         context={'list_articles': list_articles,
                  'article': article,
                  'list_section': list_section,
-                 'err_form': err_form}
+                 'err_form': err_form,
+                 'search_form': search_form}
     )
 
 
@@ -42,6 +43,7 @@ class ArticleView(generic.DetailView):
         context['list_section'] = Section.objects.all()
         context['anchor_list'] = get_anchor_list(self.object.body)
         context['err_form'] = ErrorForm()
+        context['search_form'] = SearchForm()
         self.object.body = add_anchor(self.object.body)
         return super().get_context_data(**context)
 
@@ -56,6 +58,27 @@ def article_404(request):
         'list_section': list_section}
     )
 
+
+def article_search(request):
+    form = SearchForm(request.POST)
+    if form.is_valid():
+        key = form.cleaned_data.get("search_key")
+        results_title = Article.objects.filter(title__icontains=key)
+        results_body = Article.objects.filter(body__icontains=key)
+        list_articles = Article.objects.order_by("-priority")
+        list_section = Section.objects.all()
+        err_form, search_form = ErrorForm(), SearchForm()
+    return render(
+        request,
+        'search_results.html',
+        context={'results_title': results_title,
+                 'results_body': results_body,
+                 'list_articles': list_articles,
+                 'list_section': list_section,
+                 'err_form': err_form,
+                 'search_form': search_form}
+    )
+        
 
 def error_send_email(request):
     err_form = ErrorForm(request.POST)

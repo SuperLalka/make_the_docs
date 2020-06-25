@@ -1,0 +1,46 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>
+  Результаты поиска
+</title>
+{% endblock %}
+
+{% block breadcrumb %}
+Найдено {{ results_title|length }} совпадений в названиях статей и {{ results_body|length }} совпадений в тексте
+{% endblock %}
+
+{% block content %}
+{% if results_title %}
+<h4>Совпадения в названиях статей найдены:</h4>
+{% for item in results_title %}
+<div class="card w-100 m-3">
+  <div class="card-body justify-content-center">
+    <h5 class="card-title">{{ item.title|safe }}</h5>
+    <p class="card-text">{{ item.body|truncatewords_html:15|safe }}</p>
+    <div class="row justify-content-center">
+    <a href="{% url 'documentation:article' item.address %}" class="btn btn-info">Перейти к статье</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if results_title.value != results_body.value %}
+<h5>Совпадения в текстах статей найдены:</h5>
+{% for item in results_body %}
+{% if item not in results_title %}
+<div class="card w-100 m-3">
+  <div class="card-body justify-content-center">
+    <h5 class="card-title">{{ item.title|safe }}</h5>
+    <p class="card-text">{{ item.body|truncatewords_html:15|safe }}</p>
+    <div class="row justify-content-center">
+      <a href="{% url 'documentation:article' item.address %}" class="btn btn-info">Перейти к статье</a>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% endblock %}

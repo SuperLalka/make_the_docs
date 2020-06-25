@@ -23,14 +23,14 @@ a:hover {
 }
 .sidebar-nav_list__tags {
   background: transparent;
-  border: 0px;
+  border: 0;
   color: #ff9302;
   cursor: default;
   font-size: larger;
   font-weight: bolder;
 }
 .sidebar-nav_list a {
-  border: 0px;
+  border: 0;
   background: transparent;
   color: white;
   height: 30px;
@@ -44,8 +44,9 @@ a:hover {
   background: #212b2d!important;
   color: #ffb701!important;
 }
-.git_logo {
+.content_logo {
   width: 20px;
+  vertical-align: text-bottom;
 }
 .content-body {
   min-height: 75vh;
