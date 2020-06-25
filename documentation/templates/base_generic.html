@@ -30,13 +30,17 @@
           <div class="row m-2">
             <button type="button" class="btn" data-toggle="button" aria-pressed="false">
               {% load static %}
-              <img class="img_logo w-100" src="{% static 'logo.svg' %}" alt="logo">
+              <img class="content_logo w-100" src="{% static 'logo.svg' %}" alt="logo">
             </button>
           </div>
+          <!-- Button trigger modal -->
           <div class="form-group">
+            <button type="button" class="btn btn-link w-100" data-toggle="modal" data-target="#Search-Modal">
             <input type="text" class="form-control" id="sidebar-nav_upper__search-form"
                    placeholder="Search Docs">
+            </button>
           </div>
+          <!-- Button trigger modal end -->
         </div>
         <div class="sidebar-nav_list">
           {% block sidebar %}
@@ -74,8 +78,10 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb bg-white m-0 pl-0">
                 <li class="breadcrumb-item"><a class="text-decoration-none"
-                                               href="{% url 'documentation:index' %}">Start
-                  Page</a></li>
+                                               href="{% url 'documentation:index' %}">
+                  {% load static %}
+                  <img class="content_logo" src="{% static 'home_logo.png' %}" alt="home_logo">
+                </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
                   {% block breadcrumb %}{% endblock %}
                 </li>
@@ -85,7 +91,7 @@
           <div class="col-3 align-self-center">
             <p class="text-right m-0"><a class="text-decoration-none"
                                          href="https://github.com/SuperLalka/make_the_docs">
-              <img class="git_logo"
+              <img class="content_logo"
                    src="https://github.githubassets.com/images/spinners/octocat-spinner-128.gif"
                    alt="git_logo">
               Edit on GitHub
@@ -110,6 +116,7 @@
           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ErrorModal">
             Сообщить об ошибке
           </button>
+          <!-- Button trigger modal end -->
           <!-- Modal -->
           <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="ErrorModalLabel"
                aria-hidden="true">
@@ -125,6 +132,28 @@
                   <form action="error_send_email" method="post">
                     {% csrf_token %}
                     {{ err_form|crispy }}
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal -->
+          <div class="modal fade" id="Search-Modal" tabindex="-1" role="dialog" aria-labelledby="Search-Modal-form"
+               aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="Search-Modal-form">Поиск</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="/docs/article_search" method="post">
+                    {% csrf_token %}
+                    {{ search_form|crispy }}
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                     <button type="submit" class="btn btn-primary">Отправить</button>
                   </form>
