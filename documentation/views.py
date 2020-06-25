@@ -68,6 +68,8 @@ def article_search(request):
         list_articles = Article.objects.order_by("-priority")
         list_section = Section.objects.all()
         err_form, search_form = ErrorForm(), SearchForm()
+    else:
+        return HttpResponseRedirect(request)
     return render(
         request,
         'search_results.html',
@@ -83,7 +85,7 @@ def article_search(request):
 def error_send_email(request):
     err_form = ErrorForm(request.POST)
     err_message = err_form['err_name'].value() + "\n" + err_form['err_desc'].value()
-    if err_form:
+    if err_form.is_valid():
         try:
             send_mail('Make-the-docs-site', err_message, 'site@example.com', ['user@example.com'])
         except BadHeaderError:

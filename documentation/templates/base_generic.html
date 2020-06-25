@@ -129,7 +129,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <form action="error_send_email" method="post">
+                  <form action="/docs/typo_feedback" method="post">
                     {% csrf_token %}
                     {{ err_form|crispy }}
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
