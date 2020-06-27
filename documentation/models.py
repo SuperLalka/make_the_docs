@@ -19,9 +19,6 @@ class Article(models.Model):
         if self.id is None:
             self.address = transliterate(self.title)
         return super().save(*args, **kwargs)
-    
-    #def get_absolute_url(self):
-        #return reverse('article', args=[str(self.id)])
 
 
 class Section(models.Model):
