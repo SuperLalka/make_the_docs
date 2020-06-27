@@ -7,40 +7,29 @@
 {% endblock %}
 
 {% block breadcrumb %}
-Найдено {{ results_title|length }} совпадений в названиях статей и {{ results_body|length }} совпадений в тексте
+Найдено {{ count_num }} совпадени{% if count_num == 1 %}е{% elif count_num <= 4 %}я{% else %}й{% endif %} в названиях и текстах статей
 {% endblock %}
 
 {% block content %}
-{% if results_title %}
-<h4 class="text-center">Совпадения в названиях статей найдены:</h4>
-{% for item in results_title %}
-<div class="card w-100 m-3">
+{% if results %}
+<h5 class="text-center">Совпадения с <b>"{{ key }}"</b> найдены:</h5>
+{% for item in results %}
+<div class="card w-100">
   <div class="card-body justify-content-center">
-    <h5 class="card-title">{{ item.title|safe }}</h5>
+    <h4 class="card-title"><a href="article/{{ item.address }}">{{ item.title|safe }}</a></h4>
+    {% if item.preamble %}
+    <p class="card-text">{{ item.preamble|truncatewords_html:15|safe }}</p>
+    {% endif %}
+    {% for key, value in item.found.items %}
+    {{key|safe}}
+    {{value|safe}}
+    {% endfor %}
     <p class="card-text">{{ item.body|truncatewords_html:15|safe }}</p>
-    <div class="row justify-content-center">
+    <div class="row justify-content-end">
     <a href="{% url 'documentation:article' item.address %}" class="btn btn-info">Перейти к статье</a>
     </div>
   </div>
 </div>
-{% endfor %}
-{% endif %}
-
-{% if results_body %}
-<h5 class="text-center">Совпадения в текстах статей найдены:</h5>
-<h6 class="text-center"><em>(Дублирование не поддерживается)</em></h6>
-{% for item in results_body %}
-{% if item not in results_title %}
-<div class="card w-100 m-3">
-  <div class="card-body justify-content-center">
-    <h5 class="card-title">{{ item.title|safe }}</h5>
-    <p class="card-text">{{ item.body|truncatewords_html:15|safe }}</p>
-    <div class="row justify-content-center">
-      <a href="{% url 'documentation:article' item.address %}" class="btn btn-info">Перейти к статье</a>
-    </div>
-  </div>
-</div>
-{% endif %}
 {% endfor %}
 {% endif %}
 

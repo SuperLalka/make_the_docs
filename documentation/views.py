@@ -1,4 +1,5 @@
 from django.core.mail import BadHeaderError, send_mail
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http.response import Http404
 from django.shortcuts import redirect, render
@@ -7,7 +8,7 @@ from django.views.defaults import page_not_found
 
 from .forms import ErrorForm, SearchForm
 from .models import Article, Section
-from .utils import add_anchor, get_anchor_list
+from .utils import add_anchor, get_anchor_list, get_search_context,  search_formatting
 
 
 def index(request):
@@ -64,8 +65,8 @@ def article_search(request):
     form = SearchForm(request.POST)
     if form.is_valid():
         key = form.cleaned_data.get("search_key")
-        results_title = Article.objects.filter(title__icontains=key)
-        results_body = Article.objects.filter(body__icontains=key)
+        results = search_formatting(Article.objects.filter(Q(title__icontains=key)|Q(body__icontains=key)), key=key)
+        results, count_num = get_search_context(results, key=key)
         list_articles = Article.objects.order_by("-priority")
         list_section = Section.objects.all()
         err_form, search_form = ErrorForm(), SearchForm()
@@ -74,8 +75,9 @@ def article_search(request):
     return render(
         request,
         'search_results.html',
-        context={'results_title': results_title,
-                 'results_body': results_body,
+        context={'results': results,
+                 'count_num': count_num,
+                 'key': key,
                  'list_articles': list_articles,
                  'list_section': list_section,
                  'err_form': err_form,

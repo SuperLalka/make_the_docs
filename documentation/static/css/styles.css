@@ -4,6 +4,14 @@ a {
 a:hover {
   color: #ffb701;
 }
+mark {
+  background: #ffd317;
+  padding: 0;
+}
+.card {
+  border-left: 0;
+  border-right: 0;
+}
 .sidebar-nav {
   height: min-content;
   position: sticky;
