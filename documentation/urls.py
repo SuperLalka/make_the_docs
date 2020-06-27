@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^article_search$', views.article_search, name='article_search'),
     url(r'^article_page_404$', views.article_404, name='article_404'),
     url(r'^typo_feedback$', views.error_send_email, name='error_send_email'),
-    
+
 ]
