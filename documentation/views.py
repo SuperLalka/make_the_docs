@@ -1,8 +1,9 @@
-from django.http import Http404
-from django.shortcuts import redirect, render
-from django.views import generic
 from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http.response import Http404
+from django.shortcuts import redirect, render
+from django.views import generic
+from django.views.defaults import page_not_found
 
 from .forms import ErrorForm, SearchForm
 from .models import Article, Section
@@ -93,3 +94,7 @@ def error_send_email(request):
         return HttpResponseRedirect('/docs/')
     else:
         return HttpResponse('Make sure all fields are entered and valid.')
+
+
+def page_404(request, exception):
+    return page_not_found(request, exception, template_name="404.html")

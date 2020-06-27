@@ -12,7 +12,7 @@
 
 {% block content %}
 {% if results_title %}
-<h4>Совпадения в названиях статей найдены:</h4>
+<h4 class="text-center">Совпадения в названиях статей найдены:</h4>
 {% for item in results_title %}
 <div class="card w-100 m-3">
   <div class="card-body justify-content-center">
@@ -26,8 +26,9 @@
 {% endfor %}
 {% endif %}
 
-{% if results_title.value != results_body.value %}
-<h5>Совпадения в текстах статей найдены:</h5>
+{% if results_body %}
+<h5 class="text-center">Совпадения в текстах статей найдены:</h5>
+<h6 class="text-center"><em>(Дублирование не поддерживается)</em></h6>
 {% for item in results_body %}
 {% if item not in results_title %}
 <div class="card w-100 m-3">
