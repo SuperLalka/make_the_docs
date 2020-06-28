@@ -21,7 +21,9 @@
     <p class="card-text">{{ item.preamble|truncatewords_html:15|safe }}</p>
     {% endif %}
     {% for key, value in item.found.items %}
-    <a href='article/{{ item.address }}#{{ key }}'>{{ key|safe }}</a>
+    <a href='article/{{ item.address }}#{% for k, v in item.anchor_list.items %}{% if k == key %}{{ v }}{% endif %}{% endfor %}'>
+      <h5>{{ key|safe }}</h5>
+    </a>
     {{ value|truncatewords_html:35|safe }}
     {% endfor %}
   </div>

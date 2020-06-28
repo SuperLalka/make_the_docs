@@ -40,6 +40,7 @@ def add_anchor(string):
 def search_formatting(results, key):
     for article in results:
         article.body = article.body.replace(key, "<mark>" + key + "</mark>")
+        article.title = article.title.replace(key, "<mark>" + key + "</mark>")
     return results
 
 
@@ -59,27 +60,22 @@ def get_search_context(results, key):
                 continue
         return found
 
-    def format_headlines_for_render(headlines):
-        headlines = [(re.sub(r'</h[23]>', '</h5>', re.sub(r'<h[23]>', '<h5>', x))) for x in headlines]
-        return headlines
-
     count_num = 0
     for item in results:
         count_num += item.body.count(key)
         headlines = re.findall(r'<h[23]>.+?<\/h[23]>', item.body)
-        headlines_replaced = format_headlines_for_render(headlines)
+        headlines_words = re.findall(r'headline">(.*?)<\/span><\/h[23]>', item.body)
         paragraphs = re.split(r'<h[23]>.+?<\/span><\/h[23]>', item.body)
         item.anchor_list = get_anchor_list(item.body)
-        results_dict = {}
         found = {}
 
         if item.body.index(paragraphs[0]) > item.body.index(headlines[0]):
-            results_dict = dict(zip(headlines_replaced, paragraphs))
+            results_dict = dict(zip(headlines_words, paragraphs))
             item.found = get_dict_for_render(results_dict, found)
 
         else:
             preamble = paragraphs[0]
-            results_dict = dict(zip(headlines_replaced, paragraphs[1:]))
+            results_dict = dict(zip(headlines_words, paragraphs[1:]))
 
             if key in preamble:
                 item.preamble = preamble
