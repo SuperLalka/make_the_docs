@@ -50,34 +50,40 @@ def get_search_context(results, key):
             if key in v:
                 for item in re.findall(r'<p>.+?<\/p>', v):
                     if key in item:
-                        found[k] = item
-                        break
+                        if key not in found:
+                            found[k] = item
             elif key in k:
-                found[k] = re.findall(r'<p>.+?<\/p>', v)[0]
-                break
+                if k not in found:
+                    found[k] = re.findall(r'<p>.+?<\/p>', v)[0]
             else:
                 continue
         return found
+
+    def format_headlines_for_render(headlines):
+        headlines = [(re.sub(r'</h[23]>', '</h5>', re.sub(r'<h[23]>', '<h5>', x))) for x in headlines]
+        return headlines
 
     count_num = 0
     for item in results:
         count_num += item.body.count(key)
         headlines = re.findall(r'<h[23]>.+?<\/h[23]>', item.body)
+        headlines_replaced = format_headlines_for_render(headlines)
         paragraphs = re.split(r'<h[23]>.+?<\/span><\/h[23]>', item.body)
+        item.anchor_list = get_anchor_list(item.body)
         results_dict = {}
         found = {}
 
         if item.body.index(paragraphs[0]) > item.body.index(headlines[0]):
-            results_dict = dict(zip(headlines, paragraphs))
+            results_dict = dict(zip(headlines_replaced, paragraphs))
             item.found = get_dict_for_render(results_dict, found)
 
         else:
             preamble = paragraphs[0]
-            results_dict = dict(zip(headlines, paragraphs[1:]))
+            results_dict = dict(zip(headlines_replaced, paragraphs[1:]))
 
             if key in preamble:
                 item.preamble = preamble
 
             item.found = get_dict_for_render(results_dict, found)
 
-        return results, count_num
+    return results, count_num

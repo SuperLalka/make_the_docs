@@ -21,13 +21,9 @@
     <p class="card-text">{{ item.preamble|truncatewords_html:15|safe }}</p>
     {% endif %}
     {% for key, value in item.found.items %}
-    {{key|safe}}
-    {{value|safe}}
+    <a href='article/{{ item.address }}#{{ key }}'>{{ key|safe }}</a>
+    {{ value|truncatewords_html:35|safe }}
     {% endfor %}
-    <p class="card-text">{{ item.body|truncatewords_html:15|safe }}</p>
-    <div class="row justify-content-end">
-    <a href="{% url 'documentation:article' item.address %}" class="btn btn-info">Перейти к статье</a>
-    </div>
   </div>
 </div>
 {% endfor %}
