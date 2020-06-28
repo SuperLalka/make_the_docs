@@ -9,6 +9,10 @@ a:hover {
   position: sticky;
   top: 0;
 }
+.sidebar-nav_back {
+  background: linear-gradient(0deg, #5586a6, white, white, #5586a6);
+  height: 75vh;
+}
 .sidebar-nav_upper {
   background: #5586a6;
   margin: 0;
