@@ -112,11 +112,16 @@
           <h6 class="footer-text">
             Built with Sphinx using a theme provided by Make the Docs.
           </h6>
+          <div class="row">
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ErrorModal">
             Сообщить об ошибке
           </button>
           <!-- Button trigger modal end -->
+            <button type="button" class="btn btn-link">
+              <a href="{% url 'documentation:generate_pdf' article.address %}">Сохранить как PDF</a>
+            </button>
+          </div>
           <!-- Modal -->
           <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="ErrorModalLabel"
                aria-hidden="true">

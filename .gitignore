@@ -1,5 +1,6 @@
 .git
 .idea
+__pycache__
 /**.__pycache__
 /documentation/**/__pycache__
 /make_the_docs/**/__pycache__

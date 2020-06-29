@@ -6,7 +6,7 @@ from django.views import generic
 
 from .forms import ErrorForm, SearchForm
 from .models import Article, Section
-from .utils import add_anchor, get_anchor_list
+from .utils import add_anchor, get_anchor_list, render_to_pdf
 
 
 def index(request):
@@ -93,3 +93,13 @@ def error_send_email(request):
         return HttpResponseRedirect('/docs/')
     else:
         return HttpResponse('Make sure all fields are entered and valid.')
+
+
+class GeneratePDF(generic.View):
+    def get(self, request, *args, **kwargs):
+        article = Article.objects.get(address=kwargs['slug'])
+        context = {
+            "article": article,
+        }
+        pdf = render_to_pdf('pdf_maker_template.html', context)
+        return pdf
