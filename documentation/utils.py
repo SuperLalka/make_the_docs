@@ -1,7 +1,7 @@
+# -*- coding: utf8 -*-
+
 import re
 
-
-# -*- coding: utf8 -*-
 
 def transliterate(name):
     """Транслитерация значения name"""
@@ -25,16 +25,17 @@ def transliterate(name):
     return name.lower()
 
 
+def add_anchor(string):
+    clear_string = re.sub("<span\s.+?>", "", re.sub("</span>", "", string))
+    for i in re.findall(r'<h[23]>(.+?)</h[23]>', clear_string):
+        clear_string = clear_string.replace(str(i), "<a id='%s'>%s</a>" % (transliterate(i), str(i)) )
+    return clear_string
+
+
 def get_anchor_list(string):
-    a1 = re.findall(r'headline">(.*?)<\/span><\/h[23]>', string)
+    a1 = re.findall(r'<h[23]><a\s.+?>(.*?)</a></h[23]>', string)
     a2 = [transliterate(i) for i in a1]
     return dict(zip(a1, a2))
-
-
-def add_anchor(string):
-    for i in re.findall(r'headline">(.*?)<\/span><\/h[23]>', string):
-        string = string.replace(str(i), str(i) + "<a id='%s'></a></span></h2>" % transliterate(i))
-    return string
 
 
 def search_formatting(results, key):
@@ -49,13 +50,13 @@ def get_search_context(results, key):
     def get_dict_for_render(results_dict, found):
         for k, v in results_dict.items():
             if key in v:
-                for item in re.findall(r'<p>.+?<\/p>', v):
+                for item in re.findall(r'<p>.+?</p>', v):
                     if key in item:
                         if key not in found:
                             found[k] = item
             elif key in k:
                 if k not in found:
-                    found[k] = re.findall(r'<p>.+?<\/p>', v)[0]
+                    found[k] = re.findall(r'<p>.+?</p>', v)[0]
             else:
                 continue
         return found
@@ -63,19 +64,19 @@ def get_search_context(results, key):
     count_num = 0
     for item in results:
         count_num += item.body.count(key)
-        headlines = re.findall(r'<h[23]>.+?<\/h[23]>', item.body)
-        headlines_words = re.findall(r'headline">(.*?)<\/span><\/h[23]>', item.body)
-        paragraphs = re.split(r'<h[23]>.+?<\/span><\/h[23]>', item.body)
+        item.body = (re.sub("<span\s.+?>", "", re.sub("</span>", "", item.body)))
+        headlines = re.findall(r'<h[23]>.+?</h[23]>', item.body)
+        paragraphs = re.split(r'<h[23]>.+?</h[23]>', item.body)
         item.anchor_list = get_anchor_list(item.body)
         found = {}
 
         if item.body.index(paragraphs[0]) > item.body.index(headlines[0]):
-            results_dict = dict(zip(headlines_words, paragraphs))
+            results_dict = dict(zip(headlines, paragraphs))
             item.found = get_dict_for_render(results_dict, found)
 
         else:
             preamble = paragraphs[0]
-            results_dict = dict(zip(headlines_words, paragraphs[1:]))
+            results_dict = dict(zip(headlines, paragraphs[1:]))
 
             if key in preamble:
                 item.preamble = preamble

@@ -4,7 +4,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.http.response import Http404
 from django.shortcuts import redirect, render
 from django.views import generic
-from django.views.defaults import page_not_found
 
 from .forms import ErrorForm, SearchForm
 from .models import Article, Section
@@ -41,12 +40,12 @@ class ArticleView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.object.body = add_anchor(self.object.body)
         context['list_articles'] = Article.objects.order_by("-priority")
         context['list_section'] = Section.objects.all()
         context['anchor_list'] = get_anchor_list(self.object.body)
         context['err_form'] = ErrorForm()
         context['search_form'] = SearchForm()
-        self.object.body = add_anchor(self.object.body)
         return super().get_context_data(**context)
 
 
@@ -96,7 +95,3 @@ def error_send_email(request):
         return HttpResponseRedirect('/docs/')
     else:
         return HttpResponse('Make sure all fields are entered and valid.')
-
-
-def page_404(request, exception):
-    return page_not_found(request, exception, template_name="404.html")

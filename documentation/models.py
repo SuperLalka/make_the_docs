@@ -1,6 +1,4 @@
-from datetime import datetime
 from django.db import models
-from django.urls import reverse
 from tinymce.models import HTMLField
 from .utils import transliterate
 
