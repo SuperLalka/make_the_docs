@@ -12,8 +12,8 @@ from .utils import add_anchor, get_anchor_list, get_search_context,  search_form
 
 def index(request):
     list_articles = Article.objects.order_by("-priority")
-    article = Article.objects.order_by("id").first()
-    list_section = Section.objects.all()
+    article = Article.objects.order_by("-priority").first()
+    list_section = Section.objects.order_by("-priority")
     err_form, search_form = ErrorForm(), SearchForm()
     return render(
         request,
@@ -42,7 +42,7 @@ class ArticleView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         self.object.body = add_anchor(self.object.body)
         context['list_articles'] = Article.objects.order_by("-priority")
-        context['list_section'] = Section.objects.all()
+        context['list_section'] = Section.objects.order_by("-priority")
         context['anchor_list'] = get_anchor_list(self.object.body)
         context['err_form'] = ErrorForm()
         context['search_form'] = SearchForm()
@@ -67,7 +67,7 @@ def article_search(request):
         results = search_formatting(Article.objects.filter(Q(title__icontains=key)|Q(body__icontains=key)), key=key)
         results, count_num = get_search_context(results, key=key)
         list_articles = Article.objects.order_by("-priority")
-        list_section = Section.objects.all()
+        list_section = Section.objects.order_by("-priority")
         err_form, search_form = ErrorForm(), SearchForm()
     else:
         return HttpResponseRedirect(request)
