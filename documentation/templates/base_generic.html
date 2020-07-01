@@ -36,8 +36,8 @@
           <!-- Button trigger modal -->
           <div class="form-group">
             <button type="button" class="btn btn-link w-100" data-toggle="modal" data-target="#Search-Modal">
-            <input type="text" class="form-control" id="sidebar-nav_upper__search-form"
-                   placeholder="Search Docs">
+              <input type="text" class="form-control" id="sidebar-nav_upper__search-form"
+                     placeholder="Search Docs">
             </button>
           </div>
           <!-- Button trigger modal end -->
@@ -113,10 +113,24 @@
             Built with Sphinx using a theme provided by Make the Docs.
           </h6>
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ErrorModal">
-            Сообщить об ошибке
-          </button>
-          <!-- Button trigger modal end -->
+          <div class="row">
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ErrorModal">
+              Сообщить об ошибке
+            </button>
+            <!-- Button trigger modal end -->
+            <!-- Button dropdown -->
+            <div class="dropdown dropup">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownVersions"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Смотреть историю версий статьи
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownVersions">
+                {% block versions %}
+                {% endblock %}
+              </div>
+            </div>
+          </div>
+          <!-- Button dropdown end -->
           <!-- Modal -->
           <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="ErrorModalLabel"
                aria-hidden="true">
@@ -139,6 +153,7 @@
               </div>
             </div>
           </div>
+          <!-- Modal end-->
           <!-- Modal -->
           <div class="modal fade" id="Search-Modal" tabindex="-1" role="dialog" aria-labelledby="Search-Modal-form"
                aria-hidden="true">

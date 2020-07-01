@@ -1,0 +1,30 @@
+{% extends "base_generic.html" %}
+
+
+{% block title %}
+<title>
+  {% for item in article %}
+  {{ article.object.field_dict.title }}
+  {% endfor %}
+</title>
+{% endblock %}
+
+{% block breadcrumb %}
+{% for item in article %}
+{{ item.field_dict.title }} (версия от {{ item.revision.date_created }})
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+{% for item in article %}
+{{ item.field_dict.body|safe }}
+{% endfor %}
+{% endblock %}
+
+{% block versions %}
+{% for version in article_versions %}
+<a class="dropdown-item"
+   href="{% url 'documentation:article_reversion' version.field_dict.address version.revision.id %}">{{ version.revision.date_created }}
+</a>
+{% endfor %}
+{% endblock %}

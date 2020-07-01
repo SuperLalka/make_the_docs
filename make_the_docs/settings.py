@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'documentation.apps.DocumentationConfig',
     'tinymce',
     'crispy_forms',
+    'reversion',
 ]
 
 MIDDLEWARE = [

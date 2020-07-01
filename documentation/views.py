@@ -7,7 +7,8 @@ from django.views import generic
 
 from .forms import ErrorForm, SearchForm
 from .models import Article, Section
-from .utils import add_anchor, get_anchor_list, get_search_context,  search_formatting
+from .utils import add_anchor, get_anchor_list, get_search_context, search_formatting
+from reversion.models import Version
 
 
 def index(request):
@@ -15,6 +16,7 @@ def index(request):
     article = Article.objects.order_by("-priority").first()
     list_section = Section.objects.order_by("-priority")
     err_form, search_form = ErrorForm(), SearchForm()
+    article_versions = Version.objects.get_for_object(article)
     return render(
         request,
         'index.html',
@@ -22,7 +24,8 @@ def index(request):
                  'article': article,
                  'list_section': list_section,
                  'err_form': err_form,
-                 'search_form': search_form}
+                 'search_form': search_form,
+                 'article_versions': article_versions}
     )
 
 
@@ -46,7 +49,28 @@ class ArticleView(generic.DetailView):
         context['anchor_list'] = get_anchor_list(self.object.body)
         context['err_form'] = ErrorForm()
         context['search_form'] = SearchForm()
+        context['article_versions'] = Version.objects.get_for_object(self.object)
         return super().get_context_data(**context)
+
+
+def article_reversion(request, *args, **kwargs):
+    list_articles = Article.objects.order_by("-priority")
+    article_qs = Article.objects.get(address=kwargs['address'])
+    article = Version.objects.get_for_object(article_qs)
+    article = article.filter(id=kwargs['version'])
+    list_section = Section.objects.order_by("-priority")
+    err_form, search_form = ErrorForm(), SearchForm()
+    article_versions = Version.objects.get_for_object(article_qs)
+    return render(
+        request,
+        'index_reversion.html',
+        context={'list_articles': list_articles,
+                 'article': article,
+                 'list_section': list_section,
+                 'err_form': err_form,
+                 'search_form': search_form,
+                 'article_versions': article_versions}
+    )
 
 
 def article_404(request):
@@ -56,7 +80,7 @@ def article_404(request):
         request,
         'article_404.html',
         context={'list_articles': list_articles,
-        'list_section': list_section}
+                 'list_section': list_section}
     )
 
 
@@ -64,7 +88,7 @@ def article_search(request):
     form = SearchForm(request.POST)
     if form.is_valid():
         key = form.cleaned_data.get("search_key")
-        results = search_formatting(Article.objects.filter(Q(title__icontains=key)|Q(body__icontains=key)), key=key)
+        results = search_formatting(Article.objects.filter(Q(title__icontains=key) | Q(body__icontains=key)), key=key)
         results, count_num = get_search_context(results, key=key)
         list_articles = Article.objects.order_by("-priority")
         list_section = Section.objects.order_by("-priority")
@@ -82,7 +106,7 @@ def article_search(request):
                  'err_form': err_form,
                  'search_form': search_form}
     )
-        
+
 
 def error_send_email(request):
     err_form = ErrorForm(request.POST)

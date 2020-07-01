@@ -1,3 +1,4 @@
 django==3.0.7
 django-tinymce==3.0.2
 django-crispy-forms==1.9.1
+django-reversion==3.0.7

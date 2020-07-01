@@ -13,3 +13,11 @@
 {% block content %}
 {{ article.body|safe }}
 {% endblock %}
+
+{% block versions %}
+{% for version in article_versions %}
+<a class="dropdown-item"
+   href="{% url 'documentation:article_reversion' article.address version.revision.id %}">{{ version.revision.date_created }}
+</a>
+{% endfor %}
+{% endblock %}
