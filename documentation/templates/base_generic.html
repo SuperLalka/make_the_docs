@@ -55,7 +55,7 @@
               {% for article in list_articles %}
               {% if article.section == section %}
               <li><a class="list-group-item list-group-item-action text-decoration-none"
-                     href="{% url 'documentation:article' article.address %}">{{ article.address }}</a>
+                     href="{% url 'documentation:article_page' article.address %}">{{ article.address }}</a>
               </li>
               {% if article.address in request.get_full_path %}
               {% if anchor_list %}
@@ -167,6 +167,7 @@
               </div>
             </div>
             <!-- Modal end-->
+          </div>
         </footer>
       </div>
     </div>

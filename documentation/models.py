@@ -1,8 +1,8 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
 
-from .utils import transliterate
 
 class ArticlesContent(models.Model):
     article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='content', null=True, blank=True)
@@ -18,6 +18,10 @@ class ArticlesContent(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('documentation:article_page', args=[self.article])
+
     
 class Article(models.Model):
     
@@ -28,6 +32,9 @@ class Article(models.Model):
     def __str__(self):
         return self.address
 
+    def get_absolute_url(self):
+        return reverse('documentation:article_page', args=[self.address])
+    
     class Meta:
         verbose_name = _('Article')
         verbose_name_plural = _('Articles')

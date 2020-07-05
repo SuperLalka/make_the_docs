@@ -67,7 +67,7 @@ def article_search(request):
     form = SearchForm(request.POST)
     if form.is_valid():
         key = form.cleaned_data.get("search_key")
-        results = search_formatting([(item.content.filter(Q(title__icontains=key) | Q(body__icontains=key))) for item in Article.objects.all()], key=key)
+        results = search_formatting([(item.content.filter(Q(title__icontains=key) | Q(body__icontains=key))) for item in Article.objects.all() if (item.content.filter(Q(title__icontains=key) | Q(body__icontains=key)))], key=key)
         results, count_num = get_search_context(results, key=key)
         list_articles = Article.objects.order_by("-priority")
         list_section = Section.objects.order_by("-priority")

@@ -3,7 +3,6 @@
 import re
 
 
-
 def transliterate(name):
     """Транслитерация значения name"""
     slovar = {
@@ -29,7 +28,7 @@ def transliterate(name):
 def add_anchor(string):
     clear_string = re.sub("<span\s.+?>", "", re.sub("</span>", "", string))
     for i in re.findall(r'<h[23]>(.+?)</h[23]>', clear_string):
-        clear_string = clear_string.replace(str(i), "<a id='%s'>%s</a>" % (transliterate(i), str(i)) )
+        clear_string = clear_string.replace(str(i), "<a id='%s'>%s</a>" % (transliterate(i), str(i)))
     return clear_string
 
 
@@ -43,14 +42,13 @@ def search_formatting(results, key):
     for article in results:
         for item in article:
             clear_body = re.sub("<span\s.+?>", "", re.sub("</span>", "", item.body))
-            item.body = re.sub(r'%s' %key, "<mark>" + key + "</mark>", clear_body)
+            item.body = re.sub(r'%s' % key, "<mark>" + key + "</mark>", clear_body)
             clear_title = re.sub("<span\s.+?>", "", re.sub("</span>", "", item.title))
             item.title = re.sub(key, "<mark>" + key + "</mark>", clear_title)
     return results
 
 
 def get_search_context(results, key):
-
     def get_dict_for_render(results_dict, found):
         for k, v in results_dict.items():
             if key in v:
@@ -73,7 +71,7 @@ def get_search_context(results, key):
         for item in article:
             count_num += (item.body.count(key) + item.title.count(key))
             item.body = (re.sub("<span\s.+?>", "", re.sub("</span>", "", item.body)))
-            headlines = re.findall(r'<h[23]>.+?</h[23]>', item.body)
+            headlines = re.findall(r'<h[23]>(.+?)</h[23]>', item.body)
             paragraphs = re.split(r'<h[23]>.+?</h[23]>', item.body)
             item.anchor_list = get_anchor_list(item.body)
             found = {}

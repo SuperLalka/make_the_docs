@@ -19,12 +19,12 @@
             {% for item in article %}
                 <div class="card w-100">
                     <div class="card-body justify-content-center">
-                        <h4 class="card-title"><a href="article/{{ item.address }}">{{ item.title|safe }}</a></h4>
+                        <h4 class="card-title"><a href="{{ item.get_absolute_url }}">{{ item.title|safe }}</a></h4>
                         {% if item.preamble %}
                             <p class="card-text">{{ item.preamble|truncatewords_html:15|safe }}</p>
                         {% endif %}
                         {% for key, value in item.found.items %}
-                            <a href='article/{{ item.address }}#
+                            <a href='{{ item.get_absolute_url }}#
                                     {% for k, v in item.anchor_list.items %}{% if k == key %}{{ v }}{% endif %}{% endfor %}'>
                                 <h5>{{ key|safe }}</h5>
                             </a>
