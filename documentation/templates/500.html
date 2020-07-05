@@ -1,8 +1,10 @@
 {% extends "base_generic.html" %}
 
+{% load i18n %}
+
 {% block title %}
 <title>
-  Внутренняя ошибка сервера
+  {% trans "Внутренняя ошибка сервера" %}
 </title>
 {% endblock %}
 
@@ -16,12 +18,12 @@
 {% endblock %}
 
 {% block breadcrumb %}
-<p>Внутренняя ошибка сервера</p>
+<p>{% trans "Внутренняя ошибка сервера" %}</p>
 {% endblock %}
 
 {% block content %}
 <div class="text-center">
-  <h1><i>Внутренняя ошибка сервера</i></h1>
+  <h1><i>{% trans "Внутренняя ошибка сервера" %}</i></h1>
   {% load static %}
   <img class="rounded w-75" src="{% static '500.png' %}" alt="500">
 </div>

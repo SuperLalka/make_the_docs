@@ -1,15 +1,19 @@
 {% extends "base_generic.html" %}
 
+{% load i18n %}
+
 {% block title %}
 <title>
-  {{ article.title }}
+  {{ title }}
 </title>
 {% endblock %}
 
 {% block breadcrumb %}
-{{ article.title }}
+{{ title }}
 {% endblock %}
 
 {% block content %}
-{{ article.body|safe }}
+
+{{ body|safe }}
+
 {% endblock %}

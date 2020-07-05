@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+{% load i18n %}
+
 <html lang="en">
 <head>
 
@@ -36,8 +39,8 @@
           <!-- Button trigger modal -->
           <div class="form-group">
             <button type="button" class="btn btn-link w-100" data-toggle="modal" data-target="#Search-Modal">
-            <input type="text" class="form-control" id="sidebar-nav_upper__search-form"
-                   placeholder="Search Docs">
+              <input type="text" class="form-control" id="sidebar-nav_upper__search-form"
+                     placeholder="Search Docs">
             </button>
           </div>
           <!-- Button trigger modal end -->
@@ -52,14 +55,14 @@
               {% for article in list_articles %}
               {% if article.section == section %}
               <li><a class="list-group-item list-group-item-action text-decoration-none"
-                     href="{% url 'documentation:article' article.address %}">{{ article.title }}</a>
+                     href="{% url 'documentation:article' article.address %}">{{ article.address }}</a>
               </li>
               {% if article.address in request.get_full_path %}
               {% if anchor_list %}
               {% for key, value in anchor_list.items %}
               <li>
                 <a class="sub-navigation list-group-item list-group-item-action pl-5"
-                   href="#{{ value }}">{{ key }}</a></li>
+                   href="#{{ value }}">{{ key|safe }}</a></li>
               {% endfor %}
               {% endif %}
               {% endif %}
@@ -72,7 +75,7 @@
           </ul>
         </div>
       </nav>
-      <div class="content col-md-8 ml-2">
+      <div class="content col-md-7 ml-2">
         <div class="row">
           <div class="col-9">
             <nav aria-label="breadcrumb">
@@ -113,55 +116,57 @@
             Built with Sphinx using a theme provided by Make the Docs.
           </h6>
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ErrorModal">
-            Сообщить об ошибке
-          </button>
-          <!-- Button trigger modal end -->
-          <!-- Modal -->
-          <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="ErrorModalLabel"
-               aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="ErrorModalLabel">Сообщить об ошибке</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form action="/docs/typo_feedback" method="post">
-                    {% csrf_token %}
-                    {{ err_form|crispy }}
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="submit" class="btn btn-primary">Отправить</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Modal -->
-          <div class="modal fade" id="Search-Modal" tabindex="-1" role="dialog" aria-labelledby="Search-Modal-form"
-               aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="Search-Modal-form">Поиск</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form action="/docs/article_search" method="post">
-                    {% csrf_token %}
-                    {{ search_form|crispy }}
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="submit" class="btn btn-primary">Отправить</button>
-                  </form>
+          <div class="row">
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ErrorModal">
+              {% trans "Report a bug" %}
+            </button>
+            <!-- Button trigger modal end -->
+            <!-- Modal -->
+            <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="ErrorModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="ErrorModalLabel">{% trans "Report a bug" %}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/docs/typo_feedback" method="post">
+                      {% csrf_token %}
+                      {{ err_form|crispy }}
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
+                      <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Modal end-->
+            <!-- Modal end-->
+            <!-- Modal -->
+            <div class="modal fade" id="Search-Modal" tabindex="-1" role="dialog" aria-labelledby="Search-Modal-form"
+                 aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="Search-Modal-form">{% trans "Search by" %}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/docs/article_search" method="post">
+                      {% csrf_token %}
+                      {{ search_form|crispy }}
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
+                      <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal end-->
         </footer>
       </div>
     </div>

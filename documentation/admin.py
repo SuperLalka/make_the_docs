@@ -1,13 +1,18 @@
 from django.contrib import admin
-from .models import Article, Section
+from .models import Article, ArticlesContent, Section
 
 
+@admin.register(ArticlesContent)
+class ArticlesContentAdmin(admin.ModelAdmin):
+    list_display = ('article', 'title', 'language')
+    list_filter = ('article','language')
+
+    
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'section', 'priority')
-    list_filter = ('section', 'priority')
-    exclude = ['address']
-
+    list_display = ('address', 'section', 'priority')
+    list_filter = ('address', 'section', 'priority')
+    
 
 class ArticleInline(admin.TabularInline):
     model = Article

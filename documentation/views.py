@@ -1,4 +1,5 @@
 from django.core.mail import BadHeaderError, send_mail
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http.response import Http404
 from django.shortcuts import redirect, render
@@ -6,19 +7,20 @@ from django.views import generic
 
 from .forms import ErrorForm, SearchForm
 from .models import Article, Section
-from .utils import add_anchor, get_anchor_list
+from .utils import add_anchor, get_anchor_list, get_search_context, search_formatting
 
 
 def index(request):
     list_articles = Article.objects.order_by("-priority")
-    article = Article.objects.order_by("id").first()
-    list_section = Section.objects.all()
+    article = (list_articles.first()).content.filter(language='en').first()
+    list_section = Section.objects.order_by("-priority")
     err_form, search_form = ErrorForm(), SearchForm()
     return render(
         request,
         'index.html',
         context={'list_articles': list_articles,
-                 'article': article,
+                 'title': article.title,
+                 'body': article.body,
                  'list_section': list_section,
                  'err_form': err_form,
                  'search_form': search_form}
@@ -39,18 +41,20 @@ class ArticleView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        article = self.object.content.filter(language='en').first()
+        context['title'] = article.title
+        context['body'] = add_anchor(article.body)
         context['list_articles'] = Article.objects.order_by("-priority")
-        context['list_section'] = Section.objects.all()
-        context['anchor_list'] = get_anchor_list(self.object.body)
+        context['list_section'] = Section.objects.order_by("-priority")
+        context['anchor_list'] = get_anchor_list(context['body'])
         context['err_form'] = ErrorForm()
         context['search_form'] = SearchForm()
-        self.object.body = add_anchor(self.object.body)
         return super().get_context_data(**context)
 
 
 def article_404(request):
     list_articles = Article.objects.order_by("-priority")
-    list_section = Section.objects.all()
+    list_section = Section.objects.order_by("-priority")
     return render(
         request,
         'article_404.html',
@@ -63,18 +67,19 @@ def article_search(request):
     form = SearchForm(request.POST)
     if form.is_valid():
         key = form.cleaned_data.get("search_key")
-        results_title = Article.objects.filter(title__icontains=key)
-        results_body = Article.objects.filter(body__icontains=key)
+        results = search_formatting([(item.content.filter(Q(title__icontains=key) | Q(body__icontains=key))) for item in Article.objects.all()], key=key)
+        results, count_num = get_search_context(results, key=key)
         list_articles = Article.objects.order_by("-priority")
-        list_section = Section.objects.all()
+        list_section = Section.objects.order_by("-priority")
         err_form, search_form = ErrorForm(), SearchForm()
     else:
         return HttpResponseRedirect(request)
     return render(
         request,
         'search_results.html',
-        context={'results_title': results_title,
-                 'results_body': results_body,
+        context={'results': results,
+                 'count_num': count_num,
+                 'key': key,
                  'list_articles': list_articles,
                  'list_section': list_section,
                  'err_form': err_form,

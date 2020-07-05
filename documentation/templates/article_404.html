@@ -1,19 +1,21 @@
 {% extends "base_generic.html" %}
 
+{% load i18n %}
+
 {% block title %}
 <title>
-  Страница не найдена
+  {% trans "Page not found" %}
 </title>
 {% endblock %}
 
 {% block breadcrumb %}
-<p>Страница не найдена</p>
+<p>{% trans "Page not found" %}</p>
 {% endblock %}
 
 {% block content %}
 <div class="text-center">
-  <h1><i>Запрашиваемая статья не найдена</i></h1>
-  <h4><i>Возможно она была удалена</i></h4>
+  <h1><i>{% trans "Requested article not found" %}</i></h1>
+  <h4><i>{% trans "Maybe she was deleted" %}</i></h4>
   {% load static %}
   <img class="rounded w-50" src="{% static 'article_404.png' %}">
 </div>

@@ -4,14 +4,20 @@ a {
 a:hover {
   color: #ffb701;
 }
+mark {
+  background: #ffd317;
+  padding: 0;
+}
+.card {
+  border-left: 0;
+  border-right: 0;
+}
 .sidebar-nav {
-  height: min-content;
+  background: #3d5a68;
+  height: 100vh;
+  padding-right: 0!important;
   position: sticky;
   top: 0;
-}
-.sidebar-nav_back {
-  background: linear-gradient(0deg, #5586a6, white, white, #5586a6);
-  height: 75vh;
 }
 .sidebar-nav_upper {
   background: #5586a6;
@@ -54,4 +60,9 @@ a:hover {
 }
 .content-body {
   min-height: 75vh;
+}
+.change_lang-button {
+  position: fixed;
+  bottom: 5vh;
+  right: 5vh;
 }
