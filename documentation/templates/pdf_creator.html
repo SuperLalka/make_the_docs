@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 {% load i18n %}
+{% load static %}
 
 <html lang="en">
 <head>
@@ -8,10 +9,9 @@
   <title>Make the Docs</title>
   <meta charset="utf-8">
   <style>
-    {% load static %}
     @font-face {
       font-family: Arial;
-      src: url("{% static 'fonts/Arial.ttf' %}");
+      src: url("{% static 'fonts/arial.ttf' %}");
     }
 
     body {
