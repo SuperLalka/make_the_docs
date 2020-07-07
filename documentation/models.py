@@ -20,7 +20,7 @@ class ArticlesContent(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('documentation:article_page', args=[self.article])
+        return reverse('documentation:article_abs_page', args=[self.article, self.language])
 
     
 class Article(models.Model):

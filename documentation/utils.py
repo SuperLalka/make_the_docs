@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-
+import os
 import re
+
+from make_the_docs import settings
 
 
 def transliterate(name):
@@ -70,10 +72,9 @@ def get_search_context(results, key):
     for article in results:
         for item in article:
             count_num += (item.body.count(key) + item.title.count(key))
-            item.body = (re.sub("<span\s.+?>", "", re.sub("</span>", "", item.body)))
             headlines = re.findall(r'<h[23]>(.+?)</h[23]>', item.body)
             paragraphs = re.split(r'<h[23]>.+?</h[23]>', item.body)
-            item.anchor_list = get_anchor_list(item.body)
+            item.anchor_list = get_anchor_list(add_anchor(item.body))
             found = {}
 
             if item.body.index(paragraphs[0]) > item.body.index(headlines[0]):
@@ -90,3 +91,13 @@ def get_search_context(results, key):
                 item.found = get_dict_for_render(results_dict, found)
 
     return results, count_num
+
+
+def fetch_pdf_resources(uri, rel):
+    if uri.find(settings.MEDIA_URL) != -1:
+        path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ''))
+    elif uri.find(settings.STATIC_URL) != -1:
+        path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ''))
+    else:
+        path = None
+    return path

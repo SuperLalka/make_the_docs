@@ -120,9 +120,13 @@
             <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ErrorModal">
               {% trans "Report a bug" %}
             </button>
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#PDFCreateModal">
+              {% trans "Save as PDF" %}
+            </button>
             <!-- Button trigger modal end -->
-            <!-- Modal -->
-            <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="ErrorModalLabel"
+            <!-- Modal Error-->
+            <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog"
+                 aria-labelledby="ErrorModalLabel"
                  aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -136,7 +140,9 @@
                     <form action="/docs/typo_feedback" method="post">
                       {% csrf_token %}
                       {{ err_form|crispy }}
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
+                      <button type="button" class="btn btn-secondary"
+                              data-dismiss="modal">{% trans "Cancel" %}
+                      </button>
                       <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
                     </form>
                   </div>
@@ -144,8 +150,9 @@
               </div>
             </div>
             <!-- Modal end-->
-            <!-- Modal -->
-            <div class="modal fade" id="Search-Modal" tabindex="-1" role="dialog" aria-labelledby="Search-Modal-form"
+            <!-- Modal Search-->
+            <div class="modal fade" id="Search-Modal" tabindex="-1" role="dialog"
+                 aria-labelledby="Search-Modal-form"
                  aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -159,10 +166,45 @@
                     <form action="/docs/article_search" method="post">
                       {% csrf_token %}
                       {{ search_form|crispy }}
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Cancel" %}</button>
+                      <button type="button" class="btn btn-secondary"
+                              data-dismiss="modal">{% trans "Cancel" %}
+                      </button>
                       <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
                     </form>
                   </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal end-->
+            <!-- Modal Error-->
+            <div class="modal fade" id="PDFCreateModal" tabindex="-1" role="dialog"
+                 aria-labelledby="PDFCreateModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="PDFCreateModalLabel">{% trans "Сhoose language" %}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <ul class="list-group">
+                      <a href="{% url 'documentation:pdf_creator' 'ru' %}" class="list-group-item list-group-item-action border-0">
+                        {% load static %}
+                        <img class="content_logo align-baseline" src="{% static 'flag_rus.gif' %}" alt="logo">
+                        {% trans "Save in Russian" %}</a>
+                      <a href="{% url 'documentation:pdf_creator' 'en' %}" class="list-group-item list-group-item-action border-0">
+                        {% load static %}
+                        <img class="content_logo align-baseline" src="{% static 'flag_eng.gif' %}" alt="logo">
+                        {% trans "Save in English" %}</a>
+                    </ul>
+                  </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">{% trans "Cancel" %}
+                        </button>
+                    </div>
                 </div>
               </div>
             </div>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+{% load i18n %}
+
+<html lang="en">
+<head>
+
+  <title>Make the Docs</title>
+  <meta charset="utf-8">
+  <style>
+    {% load static %}
+    @font-face {
+      font-family: Arial;
+      src: url("{% static 'fonts/Arial.ttf' %}");
+    }
+
+    body {
+      font-family: Arial;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .section {
+      font-size: 20px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div>
+    <hr>
+    <h1 class="text-center">Content</h1>
+    <ul>
+      {% for section in list_section %}
+      <li>{{ section }}</li>
+      <ul>
+        {% for article in list_articles %}
+        {% for item in article %}
+        {% if item.article.section == section %}
+        <li><b>{{ item.title }}</b></li>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+      </ul>
+      {% endfor %}
+    </ul>
+  </div>
+  <div>
+    {% for section in list_section %}
+    <hr>
+    <h1 class="section text-center"><b>{{ section }}</b></h1>
+    {% for article in list_articles %}
+    {% for item in article %}
+    {% if item.article.section == section %}
+    <hr>
+    <h2 class="text-center">{{ item.title|safe }}</h2>
+    {{ item.body|safe }}
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+  </div>
+</body>
+</html>

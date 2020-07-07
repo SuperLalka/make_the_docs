@@ -24,8 +24,7 @@
                             <p class="card-text">{{ item.preamble|truncatewords_html:15|safe }}</p>
                         {% endif %}
                         {% for key, value in item.found.items %}
-                            <a href='{{ item.get_absolute_url }}#
-                                    {% for k, v in item.anchor_list.items %}{% if k == key %}{{ v }}{% endif %}{% endfor %}'>
+                            <a href='{{ item.get_absolute_url }}#{% for k, v in item.anchor_list.items %}{% if k == key %}{{ v }}{% endif %}{% endfor %}'>
                                 <h5>{{ key|safe }}</h5>
                             </a>
                             {{ value|truncatewords_html:35|safe }}
