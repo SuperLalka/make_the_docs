@@ -66,3 +66,8 @@ mark {
   bottom: 5vh;
   right: 5vh;
 }
+.lang-change {
+  position: fixed!important;
+  bottom: 2vh;
+  right: 2vw;
+}

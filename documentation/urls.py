@@ -1,4 +1,7 @@
 from django.conf.urls import url
+from django.conf.urls.i18n import i18n_patterns
+from django.utils.translation import gettext_lazy as _
+from django.urls import include, path
 
 from . import views
 
@@ -12,5 +15,8 @@ urlpatterns = [
     url(r'^article_page_404$', views.article_404, name='article_404'),
     url(r'^typo_feedback$', views.error_send_email, name='error_send_email'),
     url(r'^pdf_creator/(?P<lang>\w+)$', views.pdf_creator, name='pdf_creator'),
+]
 
+urlpatterns += [
+    path('i18n/', include('django.conf.urls.i18n')),
 ]

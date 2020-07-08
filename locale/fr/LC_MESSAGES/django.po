@@ -1,0 +1,163 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-08 17:05+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\documentation\forms.py:5
+msgid "Name"
+msgstr "Nom"
+
+#: .\documentation\forms.py:5
+msgid "Enter a message name"
+msgstr "Entrez un nom de message"
+
+#: .\documentation\forms.py:6
+msgid "Description"
+msgstr "La description"
+
+#: .\documentation\forms.py:6
+msgid "Describe the error"
+msgstr "Décrivez l'erreur"
+
+#: .\documentation\forms.py:10 .\documentation\templates\base_generic.html:161
+msgid "Search by"
+msgstr "Recherché par"
+
+#: .\documentation\forms.py:10
+msgid "Enter a search term"
+msgstr "Entrez un terme de recherche"
+
+#: .\documentation\models.py:39
+msgid "Article"
+msgstr "Article"
+
+#: .\documentation\models.py:40
+msgid "Articles"
+msgstr "Des articles"
+
+#: .\documentation\models.py:50
+msgid "Section"
+msgstr "Section"
+
+#: .\documentation\models.py:51
+msgid "Sections"
+msgstr "Sections"
+
+#: .\documentation\templates\404.html:7 .\documentation\templates\404.html:21
+#: .\documentation\templates\article_404.html:7
+#: .\documentation\templates\article_404.html:12
+msgid "Page not found"
+msgstr "Page non trouvée"
+
+#: .\documentation\templates\404.html:26
+msgid "The requested page was not found"
+msgstr "La page demandée est introuvable"
+
+#: .\documentation\templates\404.html:27
+#: .\documentation\templates\article_404.html:18
+msgid "Maybe she was deleted"
+msgstr "Peut-être qu'elle a été supprimée"
+
+#: .\documentation\templates\500.html:7 .\documentation\templates\500.html:21
+#: .\documentation\templates\500.html:26
+msgid "Internal Server Error"
+msgstr "Erreur Interne du Serveur"
+
+#: .\documentation\templates\article_404.html:17
+msgid "Requested article not found"
+msgstr "Article demandé introuvable"
+
+#: .\documentation\templates\base_generic.html:101
+msgid "Edit on GitHub"
+msgstr "Modifier le GitHub"
+
+#: .\documentation\templates\base_generic.html:122
+#: .\documentation\templates\base_generic.html:135
+msgid "Report a bug"
+msgstr "Signaler un bug"
+
+#: .\documentation\templates\base_generic.html:125
+msgid "Save as PDF"
+msgstr "Enregistrer au format PDF"
+
+#: .\documentation\templates\base_generic.html:145
+#: .\documentation\templates\base_generic.html:171
+#: .\documentation\templates\base_generic.html:208
+msgid "Cancel"
+msgstr "Annuler"
+
+#: .\documentation\templates\base_generic.html:147
+#: .\documentation\templates\base_generic.html:173
+msgid "Submit"
+msgstr "Soumettre"
+
+#: .\documentation\templates\base_generic.html:187
+msgid "Сhoose language"
+msgstr "Choisissez la langue"
+
+#: .\documentation\templates\base_generic.html:198
+msgid "Save in Russian"
+msgstr "Enregistrer en russe"
+
+#: .\documentation\templates\base_generic.html:203
+msgid "Save in English"
+msgstr "Enregistrer en anglais"
+
+#: .\documentation\templates\base_generic.html:236
+msgid "Change"
+msgstr "Changement"
+
+#: .\documentation\templates\pdf_creator.html:35
+msgid "Content"
+msgstr "Contenu"
+
+#: .\documentation\templates\search_results.html:7
+msgid "Searching results"
+msgstr "Résultats de la recherche"
+
+#: .\documentation\templates\search_results.html:12
+msgid "Found matches in article titles and texts:"
+msgstr "Résultats trouvés dans les titres et textes des articles:"
+
+#: .\documentation\templates\search_results.html:17
+msgid "Matches with"
+msgstr "Correspond à"
+
+#: .\documentation\templates\search_results.html:17
+msgid "found:"
+msgstr "a trouvé:"
+
+#: .\make_the_docs\settings.py:116
+msgid "English"
+msgstr "Anglais"
+
+#: .\make_the_docs\settings.py:117
+msgid "Russian"
+msgstr "Russe"
+
+#: .\make_the_docs\settings.py:118
+msgid "German"
+msgstr "Allemand"
+
+#: .\make_the_docs\settings.py:119
+msgid "French"
+msgstr "Français"
+
+#: .\tinymce\views.py:57
+msgid "Error running spellchecker"
+msgstr "Erreur lors de l'exécution du correcteur orthographique"

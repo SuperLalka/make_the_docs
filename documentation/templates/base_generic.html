@@ -22,6 +22,7 @@
 
   {% load crispy_forms_tags %}
   {% load static %}
+
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 
@@ -97,7 +98,7 @@
               <img class="content_logo"
                    src="https://github.githubassets.com/images/spinners/octocat-spinner-128.gif"
                    alt="git_logo">
-              Edit on GitHub
+              {% trans "Edit on GitHub" %}
             </a></p>
           </div>
         </div>
@@ -124,7 +125,7 @@
               {% trans "Save as PDF" %}
             </button>
             <!-- Button trigger modal end -->
-            <!-- Modal Error-->
+            <!-- Modal Error -->
             <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog"
                  aria-labelledby="ErrorModalLabel"
                  aria-hidden="true">
@@ -149,12 +150,12 @@
                 </div>
               </div>
             </div>
-            <!-- Modal end-->
-            <!-- Modal Search-->
+            <!-- Modal end -->
+            <!-- Modal Search -->
             <div class="modal fade" id="Search-Modal" tabindex="-1" role="dialog"
                  aria-labelledby="Search-Modal-form"
                  aria-hidden="true">
-              <div class="modal-dialog modal-lg">
+              <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="Search-Modal-form">{% trans "Search by" %}</h5>
@@ -175,12 +176,12 @@
                 </div>
               </div>
             </div>
-            <!-- Modal end-->
-            <!-- Modal Error-->
+            <!-- Modal end -->
+            <!-- Modal PDF Creator -->
             <div class="modal fade" id="PDFCreateModal" tabindex="-1" role="dialog"
                  aria-labelledby="PDFCreateModalLabel"
                  aria-hidden="true">
-              <div class="modal-dialog modal-lg">
+              <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="PDFCreateModalLabel">{% trans "Сhoose language" %}</h5>
@@ -190,29 +191,51 @@
                   </div>
                   <div class="modal-body">
                     <ul class="list-group">
-                      <a href="{% url 'documentation:pdf_creator' 'ru' %}" class="list-group-item list-group-item-action border-0">
+                      <a href="{% url 'documentation:pdf_creator' 'ru' %}"
+                         class="list-group-item list-group-item-action border-0">
                         {% load static %}
                         <img class="content_logo align-baseline" src="{% static 'flag_rus.gif' %}" alt="logo">
                         {% trans "Save in Russian" %}</a>
-                      <a href="{% url 'documentation:pdf_creator' 'en' %}" class="list-group-item list-group-item-action border-0">
+                      <a href="{% url 'documentation:pdf_creator' 'en' %}"
+                         class="list-group-item list-group-item-action border-0">
                         {% load static %}
                         <img class="content_logo align-baseline" src="{% static 'flag_eng.gif' %}" alt="logo">
                         {% trans "Save in English" %}</a>
                     </ul>
                   </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"
-                                data-dismiss="modal">{% trans "Cancel" %}
-                        </button>
-                    </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{% trans "Cancel" %}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-            <!-- Modal end-->
+            <!-- Modal end -->
           </div>
         </footer>
       </div>
     </div>
+  </div>
+  <div class="lang-change btn-group mr-2 d-none d-xs-none d-sm-block" role="group" aria-label="First group">
+    <form action="{% url 'documentation:set_language' %}" method="post">
+      <div class="form-row align-items-center">
+        <div class="col-auto my-1">
+          {% csrf_token %}
+          <select name="language" class="custom-select custom-select-sm" id="inlineFormCustomSelect">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            {% for language in languages %}
+            <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+              {{ language.name_local }} ({{ language.code }})
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-secondary btn-sm">{% trans "Change" %}</button>
+      </div>
+    </form>
   </div>
 </body>
 </html>
