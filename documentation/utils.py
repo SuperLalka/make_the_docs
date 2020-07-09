@@ -36,7 +36,8 @@ def add_anchor(string):
 
 def get_anchor_list(string):
     a1 = re.findall(r'<h[23]><a\s.+?>(.*?)</a></h[23]>', string)
-    a2 = [transliterate(i) for i in a1]
+    clear_a1 = [re.sub("<mark>", "", re.sub("</mark>", "", item)) for item in a1]
+    a2 = [transliterate(i) for i in clear_a1]
     return dict(zip(a1, a2))
 
 

@@ -11,11 +11,13 @@ from xhtml2pdf import pisa
 from .forms import ErrorForm, SearchForm
 from .models import Article, Section
 from .utils import add_anchor, get_anchor_list, get_search_context, fetch_pdf_resources, search_formatting
-
+from make_the_docs import settings
 
 def index(request):
     list_articles = Article.objects.order_by("-priority")
-    article = (list_articles.first()).content.filter(language='en').first()
+    article = (list_articles.first()).content.filter(language=request.LANGUAGE_CODE).first()
+    if article is None:
+        article = (list_articles.first()).content.filter(language=settings.LANGUAGE_CODE).first()
     list_section = Section.objects.order_by("-priority")
     err_form, search_form = ErrorForm(), SearchForm()
     return render(
@@ -34,6 +36,8 @@ def article_abs(request, *args, **kwargs):
     list_articles = Article.objects.order_by("-priority")
     article = (Article.objects.filter(address=kwargs['address']).first()).content.filter(
         language=kwargs['lang']).first()
+    article.body = add_anchor(article.body)
+    anchor_list = get_anchor_list(article.body)
     list_section = Section.objects.order_by("-priority")
     err_form, search_form = ErrorForm(), SearchForm()
     return render(
@@ -42,6 +46,7 @@ def article_abs(request, *args, **kwargs):
         context={'list_articles': list_articles,
                  'title': article.title,
                  'body': article.body,
+                 'anchor_list': anchor_list,
                  'list_section': list_section,
                  'err_form': err_form,
                  'search_form': search_form}
@@ -62,7 +67,9 @@ class ArticleView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        article = self.object.content.filter(language='en').first()
+        article = self.object.content.filter(language=self.request.LANGUAGE_CODE).first()
+        if article is None:
+            article = self.object.content.filter(language=settings.LANGUAGE_CODE).first()
         context['title'] = article.title
         context['body'] = add_anchor(article.body)
         context['list_articles'] = Article.objects.order_by("-priority")
