@@ -14,16 +14,18 @@ from .utils import add_anchor, get_anchor_list, get_search_context, fetch_pdf_re
 from make_the_docs import settings
 
 
-VERSION_LIST = set([item.version for item in Article.objects.all()])
-
-
 def index(request):
     list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by("-priority")
+    if not list_articles:
+        return redirect('/docs/article_page_404', permanent=True)
+
     article = (list_articles.first()).content.filter(language=request.LANGUAGE_CODE).first()
     if article is None:
         article = (list_articles.first()).content.filter(language=settings.LANGUAGE_CODE).first()
+
     list_section = Section.objects.order_by("-priority")
     err_form, search_form = ErrorForm(), SearchForm()
+    version_list = set([item.version for item in Article.objects.all()])
     return render(
         request,
         'index.html',
@@ -33,7 +35,7 @@ def index(request):
                  'list_section': list_section,
                  'err_form': err_form,
                  'search_form': search_form,
-                 'version_list': VERSION_LIST}
+                 'version_list': version_list}
     )
 
 
@@ -84,7 +86,7 @@ class ArticleView(generic.DetailView):
         context['list_articles'] = self.queryset.order_by("-priority")
         context['list_section'] = Section.objects.order_by("-priority")
         context['anchor_list'] = get_anchor_list(context['body'])
-        context['version_list'] = VERSION_LIST
+        context['version_list'] = set([item.version for item in Article.objects.all()])
         context['err_form'] = ErrorForm()
         context['search_form'] = SearchForm()
         return super().get_context_data(**context)
@@ -93,12 +95,13 @@ class ArticleView(generic.DetailView):
 def article_404(request):
     list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by("-priority")
     list_section = Section.objects.order_by("-priority")
+    version_list = set([item.version for item in Article.objects.all()])
     return render(
         request,
         'article_404.html',
         context={'list_articles': list_articles,
                  'list_section': list_section,
-                 'version_list': VERSION_LIST}
+                 'version_list': version_list}
     )
 
 
