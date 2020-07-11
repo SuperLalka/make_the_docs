@@ -13,8 +13,12 @@ from .models import Article, Section
 from .utils import add_anchor, get_anchor_list, get_search_context, fetch_pdf_resources, search_formatting
 from make_the_docs import settings
 
+
+VERSION_LIST = set([item.version for item in Article.objects.all()])
+
+
 def index(request):
-    list_articles = Article.objects.order_by("-priority")
+    list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by("-priority")
     article = (list_articles.first()).content.filter(language=request.LANGUAGE_CODE).first()
     if article is None:
         article = (list_articles.first()).content.filter(language=settings.LANGUAGE_CODE).first()
@@ -28,12 +32,13 @@ def index(request):
                  'body': article.body,
                  'list_section': list_section,
                  'err_form': err_form,
-                 'search_form': search_form}
+                 'search_form': search_form,
+                 'version_list': VERSION_LIST}
     )
 
 
 def article_abs(request, *args, **kwargs):
-    list_articles = Article.objects.order_by("-priority")
+    list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by("-priority")
     article = (Article.objects.filter(address=kwargs['address']).first()).content.filter(
         language=kwargs['lang']).first()
     article.body = add_anchor(article.body)
@@ -65,6 +70,10 @@ class ArticleView(generic.DetailView):
         except Http404:
             return redirect('/docs/article_page_404', request=None, permanent=True)
 
+    def get_queryset(self):
+        self.queryset = Article.objects.filter(version=self.request.session.get('content_version', None))
+        return self.queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         article = self.object.content.filter(language=self.request.LANGUAGE_CODE).first()
@@ -72,22 +81,24 @@ class ArticleView(generic.DetailView):
             article = self.object.content.filter(language=settings.LANGUAGE_CODE).first()
         context['title'] = article.title
         context['body'] = add_anchor(article.body)
-        context['list_articles'] = Article.objects.order_by("-priority")
+        context['list_articles'] = self.queryset.order_by("-priority")
         context['list_section'] = Section.objects.order_by("-priority")
         context['anchor_list'] = get_anchor_list(context['body'])
+        context['version_list'] = VERSION_LIST
         context['err_form'] = ErrorForm()
         context['search_form'] = SearchForm()
         return super().get_context_data(**context)
 
 
 def article_404(request):
-    list_articles = Article.objects.order_by("-priority")
+    list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by("-priority")
     list_section = Section.objects.order_by("-priority")
     return render(
         request,
         'article_404.html',
         context={'list_articles': list_articles,
-                 'list_section': list_section}
+                 'list_section': list_section,
+                 'version_list': VERSION_LIST}
     )
 
 
@@ -99,7 +110,7 @@ def article_search(request):
             [(item.content.filter(Q(title__icontains=key) | Q(body__icontains=key))) for item in Article.objects.all()
              if (item.content.filter(Q(title__icontains=key) | Q(body__icontains=key)))], key=key)
         results, count_num = get_search_context(results, key=key)
-        list_articles = Article.objects.order_by("-priority")
+        list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by("-priority")
         list_section = Section.objects.order_by("-priority")
         err_form, search_form = ErrorForm(), SearchForm()
     else:
@@ -133,7 +144,7 @@ def error_send_email(request):
 def pdf_creator(request, **kwargs):
     template = get_template('pdf_creator.html')
     context = {}
-    articles_qs = Article.objects.all()
+    articles_qs = Article.objects.filter(version=request.session.get('content_version', None))
     context['list_articles'] = [item.content.filter(language=kwargs['lang']) for item in articles_qs]
     context['list_section'] = Section.objects.all()
     html = template.render(context)
@@ -142,3 +153,11 @@ def pdf_creator(request, **kwargs):
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type="application/pdf")
     return None
+
+
+def change_version(request, **kwargs):
+    if kwargs['version'] == 'None':
+        del request.session['content_version']
+    else:
+        request.session['content_version'] = kwargs['version']
+    return HttpResponseRedirect('/docs/')

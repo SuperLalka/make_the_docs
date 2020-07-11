@@ -61,13 +61,21 @@ mark {
 .content-body {
   min-height: 75vh;
 }
+.form-row {
+  margin-right: 0;
+}
 .change_lang-button {
   position: fixed;
   bottom: 5vh;
   right: 5vh;
 }
-.lang-change {
+.change-block {
   position: fixed!important;
   bottom: 2vh;
   right: 2vw;
+}
+.change_version-button {
+  background: #212b2d;
+  margin-left: 10px;
+  min-width: 4vw;
 }

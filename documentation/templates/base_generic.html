@@ -217,25 +217,36 @@
       </div>
     </div>
   </div>
-  <div class="lang-change btn-group mr-2 d-none d-xs-none d-sm-block" role="group" aria-label="First group">
-    <form action="{% url 'documentation:set_language' %}" method="post">
-      <div class="form-row align-items-center">
-        <div class="col-auto my-1">
-          {% csrf_token %}
-          <select name="language" class="custom-select custom-select-sm" id="inlineFormCustomSelect">
-            {% get_current_language as LANGUAGE_CODE %}
-            {% get_available_languages as LANGUAGES %}
-            {% get_language_info_list for LANGUAGES as languages %}
-            {% for language in languages %}
-            <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}selected{% endif %}>
-              {{ language.name_local }} ({{ language.code }})
-            </option>
-            {% endfor %}
-          </select>
+  <div class="change-block">
+    <div class="btn-group d-none d-xs-none d-sm-block" role="group" aria-label="First group">
+      <form action="{% url 'documentation:set_language' %}" method="post">
+        <div class="form-row align-items-center justify-content-end">
+          <div class="col-auto my-1">
+            {% csrf_token %}
+            <select name="language" class="custom-select custom-select-sm" id="inlineFormCustomSelect">
+              {% get_current_language as LANGUAGE_CODE %}
+              {% get_available_languages as LANGUAGES %}
+              {% get_language_info_list for LANGUAGES as languages %}
+              {% for language in languages %}
+              <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+                {{ language.name_local }} ({{ language.code }})
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-dark btn-sm">{% trans "Change" %}</button>
         </div>
-        <button type="submit" class="btn btn-secondary btn-sm">{% trans "Change" %}</button>
-      </div>
-    </form>
+      </form>
+    </div>
+    <div class="btn-group d-none d-xs-none d-sm-block" role="group">
+      <ul class="list-group list-group-horizontal justify-content-end">
+        {% for version in version_list %}
+        <a href="{% url 'documentation:change_version' version %}">
+          <button type="button" class="change_version-button btn btn-secondary btn-sm">{% if version == None %}latest{% else %}{{ version }}{% endif %}</button>
+        </a>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
 </body>
 </html>

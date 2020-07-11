@@ -78,18 +78,28 @@ def get_search_context(results, key):
             item.anchor_list = get_anchor_list(add_anchor(item.body))
             found = {}
 
-            if item.body.index(paragraphs[0]) > item.body.index(headlines[0]):
-                results_dict = dict(zip(headlines, paragraphs))
-                item.found = get_dict_for_render(results_dict, found)
+            if paragraphs and headlines:
+                if item.body.index(paragraphs[0]) > item.body.index(headlines[0]):
+                    results_dict = dict(zip(headlines, paragraphs))
+                    item.found = get_dict_for_render(results_dict, found)
+
+                else:
+                    preamble = paragraphs[0]
+                    results_dict = dict(zip(headlines, paragraphs[1:]))
+
+                    if key in preamble:
+                        item.preamble = preamble
+
+                    item.found = get_dict_for_render(results_dict, found)
 
             else:
-                preamble = paragraphs[0]
-                results_dict = dict(zip(headlines, paragraphs[1:]))
+                if paragraphs:
+                    preamble = paragraphs
+                else:
+                    preamble = headlines
 
                 if key in preamble:
                     item.preamble = preamble
-
-                item.found = get_dict_for_render(results_dict, found)
 
     return results, count_num
 

@@ -7,12 +7,12 @@ class ArticlesContentAdmin(admin.ModelAdmin):
     list_display = ('article', 'title', 'language')
     list_filter = ('article','language')
 
-    
+
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('address', 'section', 'priority')
-    list_filter = ('address', 'section', 'priority')
-    
+    list_display = ('address', 'section', 'priority', 'version')
+    list_filter = ('address', 'section', 'priority', 'version')
+
 
 class ArticleInline(admin.TabularInline):
     model = Article
