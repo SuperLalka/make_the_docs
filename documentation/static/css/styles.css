@@ -78,4 +78,8 @@ mark {
   background: #212b2d;
   margin-left: 10px;
   min-width: 4vw;
+  visibility: hidden;
+}
+.change_version-list:hover button {
+  visibility: visible!important;
 }

@@ -239,12 +239,17 @@
       </form>
     </div>
     <div class="btn-group d-none d-xs-none d-sm-block" role="group">
-      <ul class="list-group list-group-horizontal justify-content-end">
+      <ul class="change_version-list list-group list-group-horizontal justify-content-end">
         {% for version in version_list %}
+        {% if version|slugify != request.session.content_version|slugify %}
         <a href="{% url 'documentation:change_version' version %}">
           <button type="button" class="change_version-button btn btn-secondary btn-sm">{% if version == None %}latest{% else %}{{ version }}{% endif %}</button>
         </a>
+        {% endif %}
         {% endfor %}
+        <a href="#">
+          <button type="button" class="change_version-button btn btn-secondary btn-sm visible">Current version is {% if request.session.content_version == None %}latest{% else %}{{ request.session.content_version }}{% endif %}</button>
+        </a>
       </ul>
     </div>
   </div>

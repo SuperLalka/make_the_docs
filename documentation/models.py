@@ -4,16 +4,16 @@ from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
 
 
-class ArticlesContent(models.Model):
-    article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='content', null=True, blank=True)
-    title = models.CharField(max_length=100, help_text="Enter a titles article")
-    body = HTMLField(help_text="Enter a text article")
-
-    LANG_STATUS = (
+LANG_STATUS = (
         ('ru', 'russian'),
         ('en', 'english'),
     )
 
+
+class ArticlesContent(models.Model):
+    article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='content', null=True, blank=True)
+    title = models.CharField(max_length=100, help_text="Enter a titles article")
+    body = HTMLField(help_text="Enter a text article")
     language = models.CharField(max_length=2, choices=LANG_STATUS, default='en', help_text='check language')
 
     def __str__(self):
