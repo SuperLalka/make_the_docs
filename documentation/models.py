@@ -49,8 +49,8 @@ class ArticlesContent(models.Model):
         return reverse('documentation:article_abs_page', args=[self.article, self.language])
 
     class Meta:
-        verbose_name = _('Articles Content')
-        verbose_name_plural = _('Articles Contents')
+        verbose_name = _('ArticlesContent')
+        verbose_name_plural = _('ArticlesContents')
 
 
 class Section(models.Model):
@@ -61,18 +61,19 @@ class Section(models.Model):
         return self.title
 
     class Meta:
+        ordering = ['priority']
         verbose_name = _('Section')
         verbose_name_plural = _('Sections')
 
 
 class SectionContent(models.Model):
     section = models.ForeignKey('Section', on_delete=models.CASCADE, related_name='content', null=True, blank=True)
-    title = models.CharField(max_length=100, help_text="Enter a section name")
+    name = models.CharField(max_length=100, help_text="Enter a section name")
     language = models.CharField(max_length=2, choices=LANG_STATUS, default='en', help_text='check language')
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
-        verbose_name = _('Section Content')
-        verbose_name_plural = _('Sections Contents')
+        verbose_name = _('SectionContent')
+        verbose_name_plural = _('SectionsContents')

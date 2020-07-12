@@ -50,8 +50,7 @@
           {% block sidebar %}
           {% if list_articles %}
           <ul class="list-group">
-            {% for section_qs in list_section %}
-            {% for section in section_qs %}
+            {% for section in list_section %}
             <li class="sidebar-nav_list__tags list-group-item text-uppercase">{{ section }}</li>
             <ul class="list-group">
               {% for article in list_articles %}
@@ -69,7 +68,7 @@
               {% endif %}
               {% endif %}
               {% endif %}
-              {% endfor %}
+
             {% endfor %}
             </ul>
             {% endfor %}

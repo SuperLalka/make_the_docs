@@ -9,7 +9,7 @@ from io import BytesIO
 from xhtml2pdf import pisa
 
 from .forms import ErrorForm, SearchForm
-from .models import Article, Section
+from .models import Article, SectionContent
 from .utils import add_anchor, get_anchor_list, get_search_context, fetch_pdf_resources, search_formatting
 from make_the_docs import settings
 
@@ -23,10 +23,9 @@ def index(request):
     if article is None:
         article = (list_articles.first()).content.filter(language=settings.LANGUAGE_CODE).first()
 
-    section_qs = Section.objects.order_by("-priority")
-    list_section = [item.content.filter(language=request.LANGUAGE_CODE) for item in section_qs if item.content.filter(language=request.LANGUAGE_CODE)]
+    list_section = SectionContent.objects.filter(language=request.LANGUAGE_CODE)
     if not list_section:
-        list_section = [item.content.filter(language=settings.LANGUAGE_CODE) for item in section_qs]
+        list_section = SectionContent.objects.filter(language=settings.LANGUAGE_CODE)
 
     err_form, search_form = ErrorForm(), SearchForm()
     version_list = set([item.version for item in Article.objects.all()])
@@ -51,11 +50,9 @@ def article_abs(request, *args, **kwargs):
     anchor_list = get_anchor_list(article.body)
     err_form, search_form = ErrorForm(), SearchForm()
 
-    list_section = [item.content.filter(language=request.LANGUAGE_CODE) for item in
-                    Section.objects.order_by("-priority")]
+    list_section = SectionContent.objects.filter(language=request.LANGUAGE_CODE)
     if not list_section:
-        list_section = [item.content.filter(language=settings.LANGUAGE_CODE) for item in
-                        Section.objects.order_by("-priority")]
+        list_section = SectionContent.objects.filter(language=settings.LANGUAGE_CODE)
     return render(
         request,
         'index.html',
@@ -93,11 +90,9 @@ class ArticleView(generic.DetailView):
         context['title'] = article.title
         context['body'] = add_anchor(article.body)
         context['list_articles'] = self.queryset.order_by("-priority")
-        context['list_section'] = [item.content.filter(language=self.request.LANGUAGE_CODE) for item in
-                                   Section.objects.order_by("-priority") if item.content.filter(language=self.request.LANGUAGE_CODE)]
+        context['list_section'] = SectionContent.objects.filter(language=self.request.LANGUAGE_CODE)
         if bool(context['list_section']) is False:
-            context['list_section'] = [item.content.filter(language=settings.LANGUAGE_CODE) for item in
-                                       Section.objects.order_by("-priority")]
+            context['list_section'] = SectionContent.objects.filter(language=settings.LANGUAGE_CODE)
         context['anchor_list'] = get_anchor_list(context['body'])
         context['version_list'] = set([item.version for item in Article.objects.all()])
         context['err_form'] = ErrorForm()
@@ -109,11 +104,9 @@ def article_404(request):
     list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by("-priority")
     version_list = set([item.version for item in Article.objects.all()])
 
-    list_section = [item.content.filter(language=request.LANGUAGE_CODE) for item in
-                    Section.objects.order_by("-priority")]
+    list_section = SectionContent.objects.filter(language=request.LANGUAGE_CODE)
     if not list_section:
-        list_section = [item.content.filter(language=settings.LANGUAGE_CODE) for item in
-                        Section.objects.order_by("-priority")]
+        list_section = SectionContent.objects.filter(language=settings.LANGUAGE_CODE)
     return render(
         request,
         'article_404.html',
@@ -135,11 +128,9 @@ def article_search(request):
             "-priority")
         err_form, search_form = ErrorForm(), SearchForm()
 
-        list_section = [item.content.filter(language=request.LANGUAGE_CODE) for item in
-                        Section.objects.order_by("-priority")]
+        list_section = SectionContent.objects.filter(language=request.LANGUAGE_CODE)
         if not list_section:
-            list_section = [item.content.filter(language=settings.LANGUAGE_CODE) for item in
-                            Section.objects.order_by("-priority")]
+            list_section = SectionContent.objects.filter(language=settings.LANGUAGE_CODE)
     else:
         return HttpResponseRedirect(request)
     return render(
@@ -173,7 +164,9 @@ def pdf_creator(request, **kwargs):
     context = {}
     articles_qs = Article.objects.filter(version=request.session.get('content_version', None))
     context['list_articles'] = [item.content.filter(language=kwargs['lang']) for item in articles_qs]
-    context['list_section'] = Section.objects.all()
+    context['list_section'] = SectionContent.objects.filter(language=request.LANGUAGE_CODE)
+    if bool(context['list_section']) is False:
+        context['list_section'] = SectionContent.objects.filter(language=settings.LANGUAGE_CODE)
     html = template.render(context)
     result = BytesIO()
     pdf = pisa.pisaDocument(html.encode('UTF-8'), result, encodind='UTF-8', link_callback=fetch_pdf_resources)

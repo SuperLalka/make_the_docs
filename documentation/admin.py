@@ -28,5 +28,5 @@ class SectionAdmin(admin.ModelAdmin):
 
 @admin.register(SectionContent)
 class ArticlesContentAdmin(admin.ModelAdmin):
-    list_display = ('section', 'title', 'language')
+    list_display = ('section', 'name', 'language')
     list_filter = ('section','language')
