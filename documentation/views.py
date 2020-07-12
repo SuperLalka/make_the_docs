@@ -9,7 +9,7 @@ from io import BytesIO
 from xhtml2pdf import pisa
 
 from .forms import ErrorForm, SearchForm
-from .models import Article, SectionContent
+from .models import Article, ArticlesContent, SectionContent
 from .utils import add_anchor, get_anchor_list, get_search_context, fetch_pdf_resources, search_formatting
 from make_the_docs import settings
 
@@ -90,9 +90,11 @@ class ArticleView(generic.DetailView):
         context['title'] = article.title
         context['body'] = add_anchor(article.body)
         context['list_articles'] = self.queryset.order_by("-priority")
+
         context['list_section'] = SectionContent.objects.filter(language=self.request.LANGUAGE_CODE)
         if bool(context['list_section']) is False:
             context['list_section'] = SectionContent.objects.filter(language=settings.LANGUAGE_CODE)
+
         context['anchor_list'] = get_anchor_list(context['body'])
         context['version_list'] = set([item.version for item in Article.objects.all()])
         context['err_form'] = ErrorForm()
@@ -120,9 +122,7 @@ def article_search(request):
     form = SearchForm(request.POST)
     if form.is_valid():
         key = form.cleaned_data.get("search_key")
-        results = search_formatting(
-            [(item.content.filter(Q(title__icontains=key) | Q(body__icontains=key))) for item in Article.objects.all()
-             if (item.content.filter(Q(title__icontains=key) | Q(body__icontains=key)))], key=key)
+        results = search_formatting(ArticlesContent.objects.filter(Q(title__icontains=key) | Q(body__icontains=key)), key=key)
         results, count_num = get_search_context(results, key=key)
         list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by(
             "-priority")
@@ -164,9 +164,11 @@ def pdf_creator(request, **kwargs):
     context = {}
     articles_qs = Article.objects.filter(version=request.session.get('content_version', None))
     context['list_articles'] = [item.content.filter(language=kwargs['lang']) for item in articles_qs]
+
     context['list_section'] = SectionContent.objects.filter(language=request.LANGUAGE_CODE)
     if bool(context['list_section']) is False:
         context['list_section'] = SectionContent.objects.filter(language=settings.LANGUAGE_CODE)
+
     html = template.render(context)
     result = BytesIO()
     pdf = pisa.pisaDocument(html.encode('UTF-8'), result, encodind='UTF-8', link_callback=fetch_pdf_resources)

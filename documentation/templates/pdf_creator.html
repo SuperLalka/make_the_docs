@@ -39,7 +39,7 @@
       <ul>
         {% for article in list_articles %}
         {% for item in article %}
-        {% if item.article.section == section %}
+        {% if item.article.section == section.section %}
         <li><b>{{ item.title }}</b></li>
         {% endif %}
         {% endfor %}
@@ -54,7 +54,7 @@
     <h1 class="section text-center"><b>{{ section }}</b></h1>
     {% for article in list_articles %}
     {% for item in article %}
-    {% if item.article.section == section %}
+    {% if item.article.section == section.section %}
     <hr>
     <h2 class="text-center">{{ item.title|safe }}</h2>
     {{ item.body|safe }}

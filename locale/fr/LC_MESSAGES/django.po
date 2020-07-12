@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-08 17:05+0300\n"
+"POT-Creation-Date: 2020-07-12 16:26+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr "La description"
 msgid "Describe the error"
 msgstr "Décrivez l'erreur"
 
-#: .\documentation\forms.py:10 .\documentation\templates\base_generic.html:161
+#: .\documentation\forms.py:10 .\documentation\templates\base_generic.html:163
 msgid "Search by"
 msgstr "Recherché par"
 
@@ -42,21 +42,37 @@ msgstr "Recherché par"
 msgid "Enter a search term"
 msgstr "Entrez un terme de recherche"
 
-#: .\documentation\models.py:39
+#: .\documentation\models.py:35
 msgid "Article"
 msgstr "Article"
 
-#: .\documentation\models.py:40
+#: .\documentation\models.py:36
 msgid "Articles"
 msgstr "Des articles"
 
-#: .\documentation\models.py:50
+#: .\documentation\models.py:52
+msgid "ArticlesContent"
+msgstr "Contenu des articles"
+
+#: .\documentation\models.py:53
+msgid "ArticlesContents"
+msgstr "Contenu des articles"
+
+#: .\documentation\models.py:65
 msgid "Section"
 msgstr "Section"
 
-#: .\documentation\models.py:51
+#: .\documentation\models.py:66
 msgid "Sections"
 msgstr "Sections"
+
+#: .\documentation\models.py:78
+msgid "SectionContent"
+msgstr "Contenu de la section"
+
+#: .\documentation\models.py:79
+msgid "SectionsContents"
+msgstr "Contenu des sections"
 
 #: .\documentation\templates\404.html:7 .\documentation\templates\404.html:21
 #: .\documentation\templates\article_404.html:7
@@ -118,9 +134,13 @@ msgstr "Enregistrer en russe"
 msgid "Save in English"
 msgstr "Enregistrer en anglais"
 
-#: .\documentation\templates\base_generic.html:236
+#: .\documentation\templates\base_generic.html:237
 msgid "Change"
 msgstr "Changement"
+
+#: .\documentation\templates\base_generic.html:251
+msgid "Current version is "
+msgstr "La version actuelle est "
 
 #: .\documentation\templates\pdf_creator.html:35
 msgid "Content"
@@ -134,13 +154,17 @@ msgstr "Résultats de la recherche"
 msgid "Found matches in article titles and texts:"
 msgstr "Résultats trouvés dans les titres et textes des articles:"
 
-#: .\documentation\templates\search_results.html:17
+#: .\documentation\templates\search_results.html:18
 msgid "Matches with"
 msgstr "Correspond à"
 
-#: .\documentation\templates\search_results.html:17
+#: .\documentation\templates\search_results.html:18
 msgid "found:"
 msgstr "a trouvé:"
+
+#: .\documentation\templates\search_results.html:22
+msgid "version - "
+msgstr "version - "
 
 #: .\make_the_docs\settings.py:116
 msgid "English"

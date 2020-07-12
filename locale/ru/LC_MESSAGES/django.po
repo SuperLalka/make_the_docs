@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-08 17:05+0300\n"
+"POT-Creation-Date: 2020-07-12 16:26+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr "Описание"
 msgid "Describe the error"
 msgstr "Опишите суть ошибки"
 
-#: .\documentation\forms.py:10 .\documentation\templates\base_generic.html:161
+#: .\documentation\forms.py:10 .\documentation\templates\base_generic.html:163
 msgid "Search by"
 msgstr "Поиск"
 
@@ -44,21 +44,37 @@ msgstr "Поиск"
 msgid "Enter a search term"
 msgstr "Введите поисковое слово"
 
-#: .\documentation\models.py:39
+#: .\documentation\models.py:35
 msgid "Article"
 msgstr "Статья"
 
-#: .\documentation\models.py:40
+#: .\documentation\models.py:36
 msgid "Articles"
 msgstr "Статьи"
 
-#: .\documentation\models.py:50
+#: .\documentation\models.py:52
+msgid "ArticlesContent"
+msgstr "Контент статьи"
+
+#: .\documentation\models.py:53
+msgid "ArticlesContents"
+msgstr "Контент статей"
+
+#: .\documentation\models.py:65
 msgid "Section"
 msgstr "Раздел"
 
-#: .\documentation\models.py:51
+#: .\documentation\models.py:66
 msgid "Sections"
 msgstr "Разделы"
+
+#: .\documentation\models.py:78
+msgid "SectionContent"
+msgstr "Контент раздела"
+
+#: .\documentation\models.py:79
+msgid "SectionsContents"
+msgstr "Контент разделов"
 
 #: .\documentation\templates\404.html:7 .\documentation\templates\404.html:21
 #: .\documentation\templates\article_404.html:7
@@ -120,9 +136,13 @@ msgstr "Сохранить на русском языке"
 msgid "Save in English"
 msgstr "Сохранить на английском языке"
 
-#: .\documentation\templates\base_generic.html:236
+#: .\documentation\templates\base_generic.html:237
 msgid "Change"
 msgstr "Сменить"
+
+#: .\documentation\templates\base_generic.html:251
+msgid "Current version is "
+msgstr "Текущая версия - "
 
 #: .\documentation\templates\pdf_creator.html:35
 msgid "Content"
@@ -136,13 +156,17 @@ msgstr "Результаты поиска"
 msgid "Found matches in article titles and texts:"
 msgstr "Найдено совпадений в названиях и текстах статей:"
 
-#: .\documentation\templates\search_results.html:17
+#: .\documentation\templates\search_results.html:18
 msgid "Matches with"
 msgstr "Совпадений с"
 
-#: .\documentation\templates\search_results.html:17
+#: .\documentation\templates\search_results.html:18
 msgid "found:"
 msgstr "найдено:"
+
+#: .\documentation\templates\search_results.html:22
+msgid "version - "
+msgstr "версия - "
 
 #: .\make_the_docs\settings.py:116
 msgid "English"

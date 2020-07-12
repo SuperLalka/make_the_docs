@@ -43,11 +43,10 @@ def get_anchor_list(string):
 
 def search_formatting(results, key):
     for article in results:
-        for item in article:
-            clear_body = re.sub("<span\s.+?>", "", re.sub("</span>", "", item.body))
-            item.body = re.sub(r'%s' % key, "<mark>" + key + "</mark>", clear_body)
-            clear_title = re.sub("<span\s.+?>", "", re.sub("</span>", "", item.title))
-            item.title = re.sub(key, "<mark>" + key + "</mark>", clear_title)
+        clear_body = re.sub("<span\s.+?>", "", re.sub("</span>", "", article.body))
+        article.body = re.sub(r'%s' % key, "<mark>" + key + "</mark>", clear_body)
+        clear_title = re.sub("<span\s.+?>", "", re.sub("</span>", "", article.title))
+        article.title = re.sub(key, "<mark>" + key + "</mark>", clear_title)
     return results
 
 
@@ -70,36 +69,35 @@ def get_search_context(results, key):
         return None, 0
 
     count_num = 0
-    for article in results:
-        for item in article:
-            count_num += (item.body.count(key) + item.title.count(key))
-            headlines = re.findall(r'<h[23]>(.+?)</h[23]>', item.body)
-            paragraphs = re.split(r'<h[23]>.+?</h[23]>', item.body)
-            item.anchor_list = get_anchor_list(add_anchor(item.body))
-            found = {}
+    for item in results:
+        count_num += (item.body.count(key) + item.title.count(key))
+        headlines = re.findall(r'<h[23]>(.+?)</h[23]>', item.body)
+        paragraphs = re.split(r'<h[23]>.+?</h[23]>', item.body)
+        item.anchor_list = get_anchor_list(add_anchor(item.body))
+        found = {}
 
-            if paragraphs and headlines:
-                if item.body.index(paragraphs[0]) > item.body.index(headlines[0]):
-                    results_dict = dict(zip(headlines, paragraphs))
-                    item.found = get_dict_for_render(results_dict, found)
-
-                else:
-                    preamble = paragraphs[0]
-                    results_dict = dict(zip(headlines, paragraphs[1:]))
-
-                    if key in preamble:
-                        item.preamble = preamble
-
-                    item.found = get_dict_for_render(results_dict, found)
+        if paragraphs and headlines:
+            if item.body.index(paragraphs[0]) > item.body.index(headlines[0]):
+                results_dict = dict(zip(headlines, paragraphs))
+                item.found = get_dict_for_render(results_dict, found)
 
             else:
-                if paragraphs:
-                    preamble = paragraphs
-                else:
-                    preamble = headlines
+                preamble = paragraphs[0]
+                results_dict = dict(zip(headlines, paragraphs[1:]))
 
                 if key in preamble:
                     item.preamble = preamble
+
+                item.found = get_dict_for_render(results_dict, found)
+
+        else:
+            if paragraphs:
+                preamble = paragraphs
+            else:
+                preamble = headlines
+
+            if key in preamble:
+                item.preamble = preamble
 
     return results, count_num
 

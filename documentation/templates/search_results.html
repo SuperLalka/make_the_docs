@@ -3,36 +3,36 @@
 {% load i18n %}
 
 {% block title %}
-    <title>
-        {% trans "Searching results" %}
-    </title>
+<title>
+  {% trans "Searching results" %}
+</title>
 {% endblock %}
 
 {% block breadcrumb %}
-    {% trans "Found matches in article titles and texts:" %} {{ count_num }}
+{% trans "Found matches in article titles and texts:" %} {{ count_num }}
 {% endblock %}
 
 {% block content %}
-    {% if results %}
-        <h5 class="text-center">{% trans "Matches with" %} <b>"{{ key }}"</b> {% trans "found:" %}</h5>
-        {% for article in results %}
-            {% for item in article %}
-                <div class="card w-100">
-                    <div class="card-body justify-content-center">
-                        <h4 class="card-title"><a href="{{ item.get_absolute_url }}">{{ item.title|safe }}</a></h4>
-                        {% if item.preamble %}
-                            <p class="card-text">{{ item.preamble|truncatewords_html:15|safe }}</p>
-                        {% endif %}
-                        {% for key, value in item.found.items %}
-                            <a href='{{ item.get_absolute_url }}#{% for k, v in item.anchor_list.items %}{% if k == key %}{{ v }}{% endif %}{% endfor %}'>
-                                <h5>{{ key|safe }}</h5>
-                            </a>
-                            {{ value|truncatewords_html:35|safe }}
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endfor %}
-        {% endfor %}
+
+{% if results %}
+<h5 class="text-center">{% trans "Matches with" %} <b>"{{ key }}"</b> {% trans "found:" %}</h5>
+{% for item in results %}
+<div class="card w-100">
+  <div class="card-body justify-content-center">
+    <h4 class="card-title"><a href="{{ item.get_absolute_url }}">{{ item.title|safe }} ({% trans 'version - ' %}
+        {% if item.article.version == None %}latest{% else %}{{ item.article.version }}{% endif %})</a></h4>
+    {% if item.preamble %}
+    <p class="card-text">{{ item.preamble|truncatewords_html:15|safe }}</p>
     {% endif %}
+    {% for key, value in item.found.items %}
+    <a href='{{ item.get_absolute_url }}#{% for k, v in item.anchor_list.items %}{% if k == key %}{{ v }}{% endif %}{% endfor %}'>
+      <h5>{{ key|safe }}</h5>
+    </a>
+    {{ value|truncatewords_html:35|safe }}
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+{% endif %}
 
 {% endblock %}
