@@ -10,23 +10,6 @@ LANG_STATUS = (
     )
 
 
-class ArticlesContent(models.Model):
-    article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='content', null=True, blank=True)
-    title = models.CharField(max_length=100, help_text="Enter a titles article")
-    body = HTMLField(help_text="Enter a text article")
-    language = models.CharField(max_length=2, choices=LANG_STATUS, default='en', help_text='check language')
-
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        return reverse('documentation:article_abs_page', args=[self.article, self.language])
-
-    class Meta:
-        verbose_name = _('Articles Content')
-        verbose_name_plural = _('Articles Contents')
-
-
 class Article(models.Model):
     section = models.ForeignKey('Section', on_delete=models.SET_NULL, null=True, blank=True)
     priority = models.SmallIntegerField(default=0, null=True, blank=True)
@@ -53,13 +36,43 @@ class Article(models.Model):
         verbose_name_plural = _('Articles')
 
 
+class ArticlesContent(models.Model):
+    article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='content', null=True, blank=True)
+    title = models.CharField(max_length=100, help_text="Enter a titles article")
+    body = HTMLField(help_text="Enter a text article")
+    language = models.CharField(max_length=2, choices=LANG_STATUS, default='en', help_text='check language')
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('documentation:article_abs_page', args=[self.article, self.language])
+
+    class Meta:
+        verbose_name = _('Articles Content')
+        verbose_name_plural = _('Articles Contents')
+
+
 class Section(models.Model):
-    section = models.CharField(max_length=30, help_text="Enter a sections of articles")
+    title = models.CharField(max_length=30, help_text="Enter a sections of articles")
     priority = models.SmallIntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
-        return self.section
+        return self.title
 
     class Meta:
         verbose_name = _('Section')
         verbose_name_plural = _('Sections')
+
+
+class SectionContent(models.Model):
+    section = models.ForeignKey('Section', on_delete=models.CASCADE, related_name='content', null=True, blank=True)
+    title = models.CharField(max_length=100, help_text="Enter a section name")
+    language = models.CharField(max_length=2, choices=LANG_STATUS, default='en', help_text='check language')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = _('Section Content')
+        verbose_name_plural = _('Sections Contents')

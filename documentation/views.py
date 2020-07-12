@@ -23,7 +23,11 @@ def index(request):
     if article is None:
         article = (list_articles.first()).content.filter(language=settings.LANGUAGE_CODE).first()
 
-    list_section = Section.objects.order_by("-priority")
+    section_qs = Section.objects.order_by("-priority")
+    list_section = [item.content.filter(language=request.LANGUAGE_CODE) for item in section_qs if item.content.filter(language=request.LANGUAGE_CODE)]
+    if not list_section:
+        list_section = [item.content.filter(language=settings.LANGUAGE_CODE) for item in section_qs]
+
     err_form, search_form = ErrorForm(), SearchForm()
     version_list = set([item.version for item in Article.objects.all()])
     return render(
@@ -45,8 +49,13 @@ def article_abs(request, *args, **kwargs):
         language=kwargs['lang']).first()
     article.body = add_anchor(article.body)
     anchor_list = get_anchor_list(article.body)
-    list_section = Section.objects.order_by("-priority")
     err_form, search_form = ErrorForm(), SearchForm()
+
+    list_section = [item.content.filter(language=request.LANGUAGE_CODE) for item in
+                    Section.objects.order_by("-priority")]
+    if not list_section:
+        list_section = [item.content.filter(language=settings.LANGUAGE_CODE) for item in
+                        Section.objects.order_by("-priority")]
     return render(
         request,
         'index.html',
@@ -84,7 +93,11 @@ class ArticleView(generic.DetailView):
         context['title'] = article.title
         context['body'] = add_anchor(article.body)
         context['list_articles'] = self.queryset.order_by("-priority")
-        context['list_section'] = Section.objects.order_by("-priority")
+        context['list_section'] = [item.content.filter(language=self.request.LANGUAGE_CODE) for item in
+                                   Section.objects.order_by("-priority") if item.content.filter(language=self.request.LANGUAGE_CODE)]
+        if bool(context['list_section']) is False:
+            context['list_section'] = [item.content.filter(language=settings.LANGUAGE_CODE) for item in
+                                       Section.objects.order_by("-priority")]
         context['anchor_list'] = get_anchor_list(context['body'])
         context['version_list'] = set([item.version for item in Article.objects.all()])
         context['err_form'] = ErrorForm()
@@ -94,8 +107,13 @@ class ArticleView(generic.DetailView):
 
 def article_404(request):
     list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by("-priority")
-    list_section = Section.objects.order_by("-priority")
     version_list = set([item.version for item in Article.objects.all()])
+
+    list_section = [item.content.filter(language=request.LANGUAGE_CODE) for item in
+                    Section.objects.order_by("-priority")]
+    if not list_section:
+        list_section = [item.content.filter(language=settings.LANGUAGE_CODE) for item in
+                        Section.objects.order_by("-priority")]
     return render(
         request,
         'article_404.html',
@@ -113,9 +131,15 @@ def article_search(request):
             [(item.content.filter(Q(title__icontains=key) | Q(body__icontains=key))) for item in Article.objects.all()
              if (item.content.filter(Q(title__icontains=key) | Q(body__icontains=key)))], key=key)
         results, count_num = get_search_context(results, key=key)
-        list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by("-priority")
-        list_section = Section.objects.order_by("-priority")
+        list_articles = Article.objects.filter(version=request.session.get('content_version', None)).order_by(
+            "-priority")
         err_form, search_form = ErrorForm(), SearchForm()
+
+        list_section = [item.content.filter(language=request.LANGUAGE_CODE) for item in
+                        Section.objects.order_by("-priority")]
+        if not list_section:
+            list_section = [item.content.filter(language=settings.LANGUAGE_CODE) for item in
+                            Section.objects.order_by("-priority")]
     else:
         return HttpResponseRedirect(request)
     return render(

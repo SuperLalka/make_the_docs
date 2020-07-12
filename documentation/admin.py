@@ -1,11 +1,5 @@
 from django.contrib import admin
-from .models import Article, ArticlesContent, Section
-
-
-@admin.register(ArticlesContent)
-class ArticlesContentAdmin(admin.ModelAdmin):
-    list_display = ('article', 'title', 'language')
-    list_filter = ('article','language')
+from .models import Article, ArticlesContent, Section, SectionContent
 
 
 @admin.register(Article)
@@ -19,8 +13,20 @@ class ArticleInline(admin.TabularInline):
     extra = 0
 
 
+@admin.register(ArticlesContent)
+class ArticlesContentAdmin(admin.ModelAdmin):
+    list_display = ('article', 'title', 'language')
+    list_filter = ('article','language')
+
+
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
-    list_display = ('section', 'priority')
-    list_filter = ('section', 'priority')
+    list_display = ('title', 'priority')
+    list_filter = ('title', 'priority')
     inlines = [ArticleInline]
+
+
+@admin.register(SectionContent)
+class ArticlesContentAdmin(admin.ModelAdmin):
+    list_display = ('section', 'title', 'language')
+    list_filter = ('section','language')

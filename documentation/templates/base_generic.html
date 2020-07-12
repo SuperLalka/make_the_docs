@@ -50,11 +50,12 @@
           {% block sidebar %}
           {% if list_articles %}
           <ul class="list-group">
-            {% for section in list_section %}
+            {% for section_qs in list_section %}
+            {% for section in section_qs %}
             <li class="sidebar-nav_list__tags list-group-item text-uppercase">{{ section }}</li>
             <ul class="list-group">
               {% for article in list_articles %}
-              {% if article.section == section %}
+              {% if article.section == section.section %}
               <li><a class="list-group-item list-group-item-action text-decoration-none"
                      href="{% url 'documentation:article_page' article.address %}">{{ article.address }}</a>
               </li>
@@ -69,6 +70,7 @@
               {% endif %}
               {% endif %}
               {% endfor %}
+            {% endfor %}
             </ul>
             {% endfor %}
             {% endif %}
@@ -248,7 +250,7 @@
         {% endif %}
         {% endfor %}
         <a href="#">
-          <button type="button" class="change_version-button btn btn-secondary btn-sm visible">Current version is {% if request.session.content_version == None %}latest{% else %}{{ request.session.content_version }}{% endif %}</button>
+          <button type="button" class="change_version-button btn btn-secondary btn-sm visible">{% trans 'Current version is ' %}{% if request.session.content_version == None %}latest{% else %}{{ request.session.content_version }}{% endif %}</button>
         </a>
       </ul>
     </div>
