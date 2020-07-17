@@ -46,18 +46,31 @@
           </div>
           <!-- Button trigger modal end -->
         </div>
+        <!-- Sidebar sections & articles -->
         <div class="sidebar-nav_list">
           {% block sidebar %}
           {% if list_articles %}
           <ul class="list-group">
-            {% for section in list_section %}
+            {% for sections in list_section %}
+            {% for section in sections.content.all %}
+            {% if LANGUAGE_CODE in sections.lang_list and section.language == LANGUAGE_CODE or LANGUAGE_CODE not in sections.lang_list and section.language == settings.LANGUAGE_CODE %}
             <li class="sidebar-nav_list__tags list-group-item text-uppercase">{{ section }}</li>
             <ul class="list-group">
               {% for article in list_articles %}
               {% if article.section == section.section %}
+              {% for item in article.content.all %}
+              {% if LANGUAGE_CODE in article.lang_list %}
+              {% if item.language == LANGUAGE_CODE %}
               <li><a class="list-group-item list-group-item-action text-decoration-none"
-                     href="{% url 'documentation:article_page' article.address %}">{{ article.address }}</a>
+                     href="{% url 'documentation:article_page' article.address %}">{{ item.title }}</a>
               </li>
+              {% endif %}
+              {% elif LANGUAGE_CODE not in article.lang_list and item.language == settings.LANGUAGE_CODE %}
+              <li><a class="list-group-item list-group-item-action text-decoration-none"
+                     href="{% url 'documentation:article_page' article.address %}">{{ item.title }}</a>
+              </li>
+              {% endif %}
+              {% endfor %}
               {% if article.address in request.get_full_path %}
               {% if anchor_list %}
               {% for key, value in anchor_list.items %}
@@ -68,13 +81,16 @@
               {% endif %}
               {% endif %}
               {% endif %}
-            {% endfor %}
+              {% endfor %}
             </ul>
+            {% endif %}
+            {% endfor %}
             {% endfor %}
           </ul>
           {% endif %}
           {% endblock %}
         </div>
+        <!-- Sidebar sections & articles end -->
       </nav>
       <div class="content col-md-7 ml-2">
         <div class="row">
@@ -218,6 +234,7 @@
     </div>
   </div>
   <div class="change-block">
+    {% block content_switch %}
     <div class="btn-group d-none d-xs-none d-sm-block" role="group" aria-label="First group">
       <form action="{% url 'documentation:set_language' %}" method="post">
         <div class="form-row align-items-center justify-content-end">
@@ -243,15 +260,18 @@
         {% for version in version_list %}
         {% if version|slugify != request.session.content_version|slugify %}
         <a href="{% url 'documentation:change_version' version %}">
-          <button type="button" class="change_version-button btn btn-secondary btn-sm">{% if version == None %}latest{% else %}{{ version }}{% endif %}</button>
+          <button type="button" class="change_version-button btn btn-secondary btn-sm">{% if version == None %}latest{% else %}{{ version }}{% endif %}
+          </button>
         </a>
         {% endif %}
         {% endfor %}
         <a href="#">
-          <button type="button" class="change_version-button btn btn-secondary btn-sm visible">{% trans 'Current version is ' %}{% if request.session.content_version == None %}latest{% else %}{{ request.session.content_version }}{% endif %}</button>
+          <button type="button" class="change_version-button btn btn-secondary btn-sm visible">{% trans 'Current version is ' %}{% if request.session.content_version == None %}latest{% else %}{{ request.session.content_version }}{% endif %}
+          </button>
         </a>
       </ul>
     </div>
+    {% endblock %}
   </div>
 </body>
 </html>

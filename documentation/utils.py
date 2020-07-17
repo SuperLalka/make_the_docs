@@ -44,21 +44,23 @@ def get_anchor_list(string):
 def search_formatting(results, key):
     for article in results:
         clear_body = re.sub("<span\s.+?>", "", re.sub("</span>", "", article.body))
-        article.body = re.sub(r'%s' % key, "<mark>" + key + "</mark>", clear_body)
+        for item in re.findall(f'(?i){key}', clear_body):
+            article.body = clear_body.replace(item, "<mark>" + item + "</mark>")
         clear_title = re.sub("<span\s.+?>", "", re.sub("</span>", "", article.title))
-        article.title = re.sub(key, "<mark>" + key + "</mark>", clear_title)
+        for item in re.findall(f'(?i){key}', clear_title):
+            article.title = clear_title.replace(item, "<mark>" + item + "</mark>")
     return results
 
 
 def get_search_context(results, key):
     def get_dict_for_render(results_dict, found):
         for k, v in results_dict.items():
-            if key in v:
+            if re.search(key, v, re.I):
                 for item in re.findall(r'<p>.+?</p>', v):
-                    if key in item:
+                    if re.search(key, item, re.I):
                         if key not in found:
                             found[k] = item
-            elif key in k:
+            elif re.search(key, k, re.I):
                 if k not in found:
                     found[k] = re.findall(r'<p>.+?</p>', v)[0]
             else:
@@ -70,7 +72,7 @@ def get_search_context(results, key):
 
     count_num = 0
     for item in results:
-        count_num += (item.body.count(key) + item.title.count(key))
+        count_num += len(re.findall(key, item.body, re.I)) + len(re.findall(key, item.title, re.I))
         headlines = re.findall(r'<h[23]>(.+?)</h[23]>', item.body)
         paragraphs = re.split(r'<h[23]>.+?</h[23]>', item.body)
         item.anchor_list = get_anchor_list(add_anchor(item.body))
@@ -92,11 +94,11 @@ def get_search_context(results, key):
 
         else:
             if paragraphs:
-                preamble = paragraphs
+                preamble = paragraphs[0]
             else:
-                preamble = headlines
+                preamble = headlines[0]
 
-            if key in preamble:
+            if re.search(key, preamble, re.I):
                 item.preamble = preamble
 
     return results, count_num

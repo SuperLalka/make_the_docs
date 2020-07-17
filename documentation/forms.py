@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+
 class ErrorForm(forms.Form):
     err_name = forms.CharField(label=_('Name'), help_text=_('Enter a message name'), max_length=50, )
     err_desc = forms.CharField(label=_('Description'), help_text=_('Describe the error'), max_length=1000, widget=forms.Textarea(attrs={'rows': 4}))

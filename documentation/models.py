@@ -26,12 +26,13 @@ class Article(models.Model):
              update_fields=None):
         if self.version is not None:
             if self.version not in [item.version for item in Article.objects.filter(address=self.address)]:
-                Article_latest = Article.objects.create(section=self.section, priority=self.priority, address=self.address)
+                article_latest = Article.objects.create(section=self.section, priority=self.priority, address=self.address)
                 for item in self.content.all():
-                    ArticlesContent.objects.create(article=Article_latest, title=item.title, body=item.body, language=item.language)
+                    ArticlesContent.objects.create(article=article_latest, title=item.title, body=item.body, language=item.language)
         return super(Article, self).save()
 
     class Meta:
+        ordering = ['-priority']
         verbose_name = _('Article')
         verbose_name_plural = _('Articles')
 
@@ -46,9 +47,10 @@ class ArticlesContent(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('documentation:article_abs_page', args=[self.article, self.language])
+        return reverse('documentation:article_page', args=[self.article, self.language])
 
     class Meta:
+        ordering = ['-article__priority']
         verbose_name = _('ArticlesContent')
         verbose_name_plural = _('ArticlesContents')
 
@@ -61,7 +63,7 @@ class Section(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['priority']
+        ordering = ['-priority']
         verbose_name = _('Section')
         verbose_name_plural = _('Sections')
 
@@ -75,5 +77,6 @@ class SectionContent(models.Model):
         return self.name
 
     class Meta:
+        ordering = ['-section__priority']
         verbose_name = _('SectionContent')
         verbose_name_plural = _('SectionsContents')
